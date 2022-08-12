@@ -113,7 +113,7 @@ sudo insmod [nombreModulo].ko
 Mostrar mensajes de consola al instalar el módulo Kernel
 
 ```sh
-dmesg
+sudo dmesg
 ```
 
 Desinstalar módulo Kernel
