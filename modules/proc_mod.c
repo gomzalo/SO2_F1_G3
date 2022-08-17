@@ -26,21 +26,29 @@ char * get_task_state(long state) {
     }
 }
 
-static int writeFile(struct seq_file *archivo, void *v)
-{
+// static int writeFile(struct seq_file *archivo, void *v)
+// {
 
-    seq_printf(archivo, "==============================\n");
-    seq_printf(archivo, "=             OS2            =\n");
-    seq_printf(archivo, "=            sopes2          =\n");
-    seq_printf(archivo, "=           proc_mod         =\n");
-    seq_printf(archivo, "==============================\n");
+//     seq_printf(archivo, "==============================\n");
+//     seq_printf(archivo, "=             OS2            =\n");
+//     seq_printf(archivo, "=            sopes2          =\n");
+//     seq_printf(archivo, "=           proc_mod         =\n");
+//     seq_printf(archivo, "==============================\n");
 
+//     return 0;
+// }
+
+static int proc_llenar_archivo(struct seq_file *m, void *v) {
+    struct task_struct *task;
+    for_each_process(task) {
+        seq_printf(m, "Process: %s\t PID:[%d]\t State: %ld\n", task->comm, task->pid, task->state);
+    }
     return 0;
 }
 
 static int atOpen(struct inode *inode, struct file *file)
 {
-    return single_open(file, writeFile, NULL);
+    return single_open(file, proc_llenar_archivo, NULL);
 }
 
 static const struct proc_ops ops = {
@@ -55,15 +63,13 @@ int proc_count(void)
     
     for_each_process(thechild)
     {
-        pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+        // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
         i++;
     }
     return i;
 }
 
-
-
-int proc_count_zombie()
+int proc_count_zombie(void)
 {
     int i = 0;
     struct task_struct *thechild;
@@ -73,7 +79,7 @@ int proc_count_zombie()
         if (thechild->state==32)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -92,7 +98,7 @@ int proc_count_interrumpidos(void)
         if (thechild->state==1026)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -111,7 +117,7 @@ int proc_count_ejecucion(void)
         if (thechild->state==0)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -130,7 +136,7 @@ int proc_count_suspendidos(void)
         if (thechild->state==1)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -149,7 +155,7 @@ int proc_count_detenidos(void)
         if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
