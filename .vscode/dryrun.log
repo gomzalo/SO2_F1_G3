@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/luisf/SO2_F1_G3'
+make: Leaving directory '/home/luisf/SO2_F1_G3'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

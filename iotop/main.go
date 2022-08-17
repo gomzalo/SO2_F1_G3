@@ -56,7 +56,6 @@ func newExec() {
 	println("***                         NUEVA EJECUCIÓN                            ***")
 	println("**************************************************************************")
 
-
 	menu := make(map[string]string)
 	menu["1"] = "Ingresar nombre"
 	menu["2"] = "Regresar"
@@ -93,7 +92,7 @@ func selectCommands() {
 		for k, v := range menu {
 			println(k, v)
 		}
-		
+
 		var choice string
 		println("Ingrese su opción: ")
 		fmt.Scanln(&choice)
@@ -123,7 +122,7 @@ func cmdIOTOP() {
 		println("**************************************************************************")
 		fmt.Println("*** USUARIO: ", userName)
 		println("**************************************************************************\n")
-		
+
 		out, err := exec.Command("iotop", "-b", "-n1").Output()
 		if err != nil {
 			log.Fatal(err)
@@ -141,6 +140,37 @@ func cmdIOTOP() {
 			println("Respuesta no válida.")
 		}
 	}
+}
+
+func cmdTOP() {
+	var answer string
+	for {
+		clearConsole()
+
+		println("**************************************************************************")
+		println("***                              TOP                                 ***")
+		println("**************************************************************************")
+		fmt.Println("*** USUARIO: ", userName)
+		println("**************************************************************************\n")
+
+		out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+
+		println("¿Ejecutar de nuevo? (y/n): ")
+		fmt.Scanln(&answer)
+		if answer == "n" || answer == "N" {
+			clearConsole()
+			break
+		} else if answer == "y" || answer == "Y" {
+			continue
+		} else {
+			println("Respuesta no válida.")
+		}
+	}
+
 }
 
 func clearConsole() {
