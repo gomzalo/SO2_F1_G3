@@ -10,6 +10,9 @@ MODULE_AUTHOR("sopes2");
 MODULE_DESCRIPTION("Basic process information Linux module.");
 MODULE_VERSION("0.01");
 
+struct task_struct *task;
+int extra2;
+
 char * get_task_state(long state) {
     switch (state)
     {
@@ -28,20 +31,40 @@ char * get_task_state(long state) {
 
 // static int writeFile(struct seq_file *archivo, void *v)
 // {
-
 //     seq_printf(archivo, "==============================\n");
 //     seq_printf(archivo, "=             OS2            =\n");
 //     seq_printf(archivo, "=            sopes2          =\n");
 //     seq_printf(archivo, "=           proc_mod         =\n");
 //     seq_printf(archivo, "==============================\n");
-
 //     return 0;
 // }
 
 static int proc_llenar_archivo(struct seq_file *m, void *v) {
-    struct task_struct *task;
+    
+    #define K(x) ((x) << (PAGE_SHIFT - 10))
+    extra2 = 0;
     for_each_process(task) {
+
+        if (extra2 == 0)
+        {
+
+            extra2 = 1;
+        }
+        else
+        {
+
+            seq_printf(m, ",");
+        }
+        
         seq_printf(m, "Process: %s\t PID:[%d]\t State: %ld\n", task->comm, task->pid, task->state);
+        if (task->mm)
+        {
+            seq_printf(m, "\"mm\"  : %8lu, ", K(task->mm->total_vm)/2014);
+        }
+        else
+        {
+            seq_printf(m, "\"mm\"  : 0, ");
+        }
     }
     return 0;
 }
