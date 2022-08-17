@@ -21,6 +21,11 @@
 - Compilador GoLang instalado
 - Headers genericos del Kernel de Linux
 
+## Menu Principal GO
+En este apartado puedes seleccionar cad auna de las Caracteristicas necesarias a utilizar durante esta fase
+
+![Menu Principal](Images/menu.png)
+
 ## Instalar GO
 
 ### Descargar Go
