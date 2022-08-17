@@ -41,7 +41,7 @@ char * get_task_state(long state) {
 //     seq_printf(archivo, "==============================\n");
 //     return 0;
 // }
-int count_exec = proc_count_ejecucion();
+
 
 static int proc_llenar_archivo(struct seq_file *m, void *v) {
     
@@ -108,14 +108,44 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
     }
     seq_printf(m, "\n]\n");
     // Resumen de procesos
+    int c_exec = 0;
+    int c_suspended = 0;
+    int c_stopped = 0;
+    int c_interrupted = 0;
+    int c_zombie = 0;
+    int c_all = 0;
     seq_printf(m, "\n::::::::::::::     RESUMEN DE PROCESOS     ::::::::::::::\n");
-    
-    seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
-    // seq_printf(m, "\nTotal zombie processes: %d .\n", proc_count_zombie());
-    // seq_printf(m, "\nTotal interrumpidos processes: %d .\n", proc_count_interrumpidos());
-    // seq_printf(m, "\nTotal suspendidos processes: %d .\n", proc_count_suspendidos());
-    // seq_printf(m, "\nTotal detenidos processes: %d .\n", proc_count_detenidos());
-    // seq_printf(m, "\nTotal processes: %d .\n", proc_count());
+    // seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
+    for_each_process(thechild)
+    {
+        if (thechild->state==0)
+        {
+            c_exec++;
+        }
+        if (thechild->state==1)
+        {
+            c_suspended++;
+        }
+        if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
+        {
+            c_stopped++;
+        }
+        if (thechild->state==1026)
+        {
+            c_interrupted++;
+        }
+        if (thechild->state==32)
+        {
+            c_zombie++;
+        }
+        c_all++;
+    }
+    seq_printf(m, "\nTotal processes: %d .\n", c_all);
+    seq_printf(m, "\nTotal running processes: %d .\n", c_exec);
+    seq_printf(m, "\nTotal suspendidos processes: %d .\n", c_suspended);
+    seq_printf(m, "\nTotal detenidos processes: %d .\n", c_stopped);
+    seq_printf(m, "\nTotal interrumpidos processes: %d .\n", c_interrupted);
+    seq_printf(m, "\nTotal zombie processes: %d .\n", c_zombie);
     seq_printf(m, "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
     return 0;
 }
