@@ -63,7 +63,7 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
             seq_printf(m, ",");
         }
         
-        seq_printf(m, "Process: %s\t PID:[%d]\t State: %ld\n", task->comm, task->pid, task->state);
+        seq_printf(m, "Process: %s\t PID:[%d]\t State: %ld\n", task->comm, task->pid, task->__state);
         if (task->mm)
         {
             seq_printf(m, "\"mm\"  : %8lu, ", K(task->mm->total_vm)/2014);
@@ -92,7 +92,7 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
             }
 
             task_child = list_entry(list, struct task_struct, sibling);
-            seq_printf(m, "\n     { \"PID\" : %d, \"Nombre\" : \"%s\" , \"Estado\" : %ld , \"uid\" : %i,  ", task_child->pid, task_child->comm, task_child->state, task_child->cred->uid.val);
+            seq_printf(m, "\n     { \"PID\" : %d, \"Nombre\" : \"%s\" , \"Estado\" : %ld , \"uid\" : %i,  ", task_child->pid, task_child->comm, task_child->__state, task_child->cred->uid.val);
             if (task->mm)
             {
                 seq_printf(m, "\"mm\"  : %8lu }", K(task->mm->total_vm)/1024);
@@ -118,23 +118,23 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
     // seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
     for_each_process(task_child)
     {
-        if (task_child->state==0)
+        if (task_child->__state==0)
         {
             c_exec++;
         }
-        if (task_child->state==1)
+        if (task_child->__state==1)
         {
             c_suspended++;
         }
-        if (task_child->state!=0 && task_child->state!=1 && task_child->state!=32 && task_child->state!=1026)  
+        if (task_child->__state!=0 && task_child->__state!=1 && task_child->__state!=32 && task_child->__state!=1026)  
         {
             c_stopped++;
         }
-        if (task_child->state==1026)
+        if (task_child->__state==1026)
         {
             c_interrupted++;
         }
-        if (task_child->state==32)
+        if (task_child->__state==32)
         {
             c_zombie++;
         }
@@ -167,7 +167,7 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         seq_printf("== %s [%d]\n", thechild->comm, thechild->state);
+//         seq_printf("== %s [%d]\n", thechild->comm, thechild->__state);
 //         i++;
 //     }
 //     return i;
@@ -180,10 +180,10 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         if (thechild->state==32)
+//         if (thechild->__state==32)
 //         {
 //             /* code */
-//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->__state);
 //             i++;
 //         }
         
@@ -199,10 +199,10 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         if (thechild->state==1026)
+//         if (thechild->__state==1026)
 //         {
 //             /* code */
-//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->__state);
 //             i++;
 //         }
         
@@ -223,10 +223,10 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         if (thechild->state==0)
+//         if (thechild->__state==0)
 //         {
 //             /* code */
-//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->__state);
 //             i++;
 //         }
         
@@ -242,10 +242,10 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         if (thechild->state==1)
+//         if (thechild->__state==1)
 //         {
 //             /* code */
-//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->__state);
 //             i++;
 //         }
         
@@ -261,10 +261,10 @@ static const struct proc_ops ops = {
     
 //     for_each_process(thechild)
 //     {
-//         if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
+//         if (thechild->__state!=0 && thechild->__state!=1 && thechild->__state!=32 && thechild->__state!=1026)  
 //         {
 //             /* code */
-//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->__state);
 //             i++;
 //         }
         
