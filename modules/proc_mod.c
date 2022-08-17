@@ -105,8 +105,16 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
         extra = 0;
         seq_printf(m, "]\n}\n");
     }
-
     seq_printf(m, "\n]\n");
+    // Resumen de procesos
+    seq_printf(m, "\n::::::::::::::     RESUMEN DE PROCESOS     ::::::::::::::\n");
+    seq_printf(m, "\nTotal running processes: %d .\n", proc_count_ejecucion());
+    seq_printf(m, "\nTotal zombie processes: %d .\n", proc_count_zombie());
+    seq_printf(m, "\nTotal interrumpidos processes: %d .\n", proc_count_interrumpidos());
+    seq_printf(m, "\nTotal suspendidos processes: %d .\n", proc_count_suspendidos());
+    seq_printf(m, "\nTotal detenidos processes: %d .\n", proc_count_detenidos());
+    seq_printf(m, "\nTotal processes: %d .\n", proc_count());
+    seq_printf(m, "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
     return 0;
 }
 
@@ -127,7 +135,7 @@ int proc_count(void)
     
     for_each_process(thechild)
     {
-        // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+        seq_printf("== %s [%d]\n", thechild->comm, thechild->state);
         i++;
     }
     return i;
@@ -173,7 +181,12 @@ int proc_count_interrumpidos(void)
 
 int proc_count_ejecucion(void)
 {
-    int i = 0;
+    int i = 0;    printk(KERN_INFO "Total processes: %d .\n", proc_count());
+    printk(KERN_INFO "Total running processes: %d .\n", proc_count_ejecucion());
+    printk(KERN_INFO "Total zombie processes: %d .\n", proc_count_zombie());
+    printk(KERN_INFO "Total interrumpidos processes: %d .\n", proc_count_interrumpidos());
+     printk(KERN_INFO "Total suspendidos processes: %d .\n", proc_count_suspendidos());
+    printk(KERN_INFO "Total detenidos processes: %d .\n", proc_count_detenidos());
     struct task_struct *thechild;
     
     for_each_process(thechild)

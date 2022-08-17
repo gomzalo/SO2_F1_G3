@@ -153,7 +153,7 @@ func cmdTOP() {
 		fmt.Println("*** USUARIO: ", userName)
 		println("**************************************************************************\n")
 
-		out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
+		out, err := exec.Command("cat proc/proc_mod").Output()
 		if err != nil {
 			log.Fatal(err)
 		}
