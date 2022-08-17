@@ -116,25 +116,25 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
     int c_all = 0;
     seq_printf(m, "\n::::::::::::::     RESUMEN DE PROCESOS     ::::::::::::::\n");
     // seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
-    for_each_process(thechild)
+    for_each_process(task_child)
     {
-        if (thechild->state==0)
+        if (task_child->state==0)
         {
             c_exec++;
         }
-        if (thechild->state==1)
+        if (task_child->state==1)
         {
             c_suspended++;
         }
-        if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
+        if (task_child->state!=0 && task_child->state!=1 && task_child->state!=32 && task_child->state!=1026)  
         {
             c_stopped++;
         }
-        if (thechild->state==1026)
+        if (task_child->state==1026)
         {
             c_interrupted++;
         }
-        if (thechild->state==32)
+        if (task_child->state==32)
         {
             c_zombie++;
         }
@@ -160,128 +160,128 @@ static const struct proc_ops ops = {
     .proc_read = seq_read
 };
 
-int proc_count(void)
-{
-    int i = 0;
-    struct task_struct *thechild;
+// int proc_count(void)
+// {
+//     int i = 0;
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        seq_printf("== %s [%d]\n", thechild->comm, thechild->state);
-        i++;
-    }
-    return i;
-}
+//     for_each_process(thechild)
+//     {
+//         seq_printf("== %s [%d]\n", thechild->comm, thechild->state);
+//         i++;
+//     }
+//     return i;
+// }
 
-int proc_count_zombie(void)
-{
-    int i = 0;
-    struct task_struct *thechild;
+// int proc_count_zombie(void)
+// {
+//     int i = 0;
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        if (thechild->state==32)
-        {
-            /* code */
-            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
-            i++;
-        }
+//     for_each_process(thechild)
+//     {
+//         if (thechild->state==32)
+//         {
+//             /* code */
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             i++;
+//         }
         
         
-    }
-    return i;
-}
+//     }
+//     return i;
+// }
 
-int proc_count_interrumpidos(void)
-{
-    int i = 0;
-    struct task_struct *thechild;
+// int proc_count_interrumpidos(void)
+// {
+//     int i = 0;
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        if (thechild->state==1026)
-        {
-            /* code */
-            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
-            i++;
-        }
+//     for_each_process(thechild)
+//     {
+//         if (thechild->state==1026)
+//         {
+//             /* code */
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             i++;
+//         }
         
         
-    }
-    return i;
-}
+//     }
+//     return i;
+// }
 
-int proc_count_ejecucion(void)
-{
-    int i = 0;    printk(KERN_INFO "Total processes: %d .\n", proc_count());
-    printk(KERN_INFO "Total running processes: %d .\n", proc_count_ejecucion());
-    printk(KERN_INFO "Total zombie processes: %d .\n", proc_count_zombie());
-    printk(KERN_INFO "Total interrumpidos processes: %d .\n", proc_count_interrumpidos());
-     printk(KERN_INFO "Total suspendidos processes: %d .\n", proc_count_suspendidos());
-    printk(KERN_INFO "Total detenidos processes: %d .\n", proc_count_detenidos());
-    struct task_struct *thechild;
+// int proc_count_ejecucion(void)
+// {
+//     int i = 0;    printk(KERN_INFO "Total processes: %d .\n", proc_count());
+//     printk(KERN_INFO "Total running processes: %d .\n", proc_count_ejecucion());
+//     printk(KERN_INFO "Total zombie processes: %d .\n", proc_count_zombie());
+//     printk(KERN_INFO "Total interrumpidos processes: %d .\n", proc_count_interrumpidos());
+//      printk(KERN_INFO "Total suspendidos processes: %d .\n", proc_count_suspendidos());
+//     printk(KERN_INFO "Total detenidos processes: %d .\n", proc_count_detenidos());
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        if (thechild->state==0)
-        {
-            /* code */
-            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
-            i++;
-        }
+//     for_each_process(thechild)
+//     {
+//         if (thechild->state==0)
+//         {
+//             /* code */
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             i++;
+//         }
         
         
-    }
-    return i;
-}
+//     }
+//     return i;
+// }
 
-int proc_count_suspendidos(void)
-{
-    int i = 0;
-    struct task_struct *thechild;
+// int proc_count_suspendidos(void)
+// {
+//     int i = 0;
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        if (thechild->state==1)
-        {
-            /* code */
-            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
-            i++;
-        }
+//     for_each_process(thechild)
+//     {
+//         if (thechild->state==1)
+//         {
+//             /* code */
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             i++;
+//         }
         
         
-    }
-    return i;
-}
+//     }
+//     return i;
+// }
 
-int proc_count_detenidos(void)
-{
-    int i = 0;
-    struct task_struct *thechild;
+// int proc_count_detenidos(void)
+// {
+//     int i = 0;
+//     struct task_struct *thechild;
     
-    for_each_process(thechild)
-    {
-        if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
-        {
-            /* code */
-            // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
-            i++;
-        }
+//     for_each_process(thechild)
+//     {
+//         if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
+//         {
+//             /* code */
+//             // pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+//             i++;
+//         }
         
         
-    }
-    return i;
-}
+//     }
+//     return i;
+// }
 
 
 static int load_module(void)
 {
-    printk(KERN_INFO "Total processes: %d .\n", proc_count());
-    printk(KERN_INFO "Total running processes: %d .\n", proc_count_ejecucion());
-    printk(KERN_INFO "Total zombie processes: %d .\n", proc_count_zombie());
-    printk(KERN_INFO "Total interrumpidos processes: %d .\n", proc_count_interrumpidos());
-     printk(KERN_INFO "Total suspendidos processes: %d .\n", proc_count_suspendidos());
-    printk(KERN_INFO "Total detenidos processes: %d .\n", proc_count_detenidos());
+    // printk(KERN_INFO "Total processes: %d .\n", proc_count());
+    // printk(KERN_INFO "Total running processes: %d .\n", proc_count_ejecucion());
+    // printk(KERN_INFO "Total zombie processes: %d .\n", proc_count_zombie());
+    // printk(KERN_INFO "Total interrumpidos processes: %d .\n", proc_count_interrumpidos());
+    // printk(KERN_INFO "Total suspendidos processes: %d .\n", proc_count_suspendidos());
+    // printk(KERN_INFO "Total detenidos processes: %d .\n", proc_count_detenidos());
 
     proc_create("proc_mod", 0, NULL, &ops);
     return 0;
