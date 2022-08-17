@@ -108,12 +108,13 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
     seq_printf(m, "\n]\n");
     // Resumen de procesos
     seq_printf(m, "\n::::::::::::::     RESUMEN DE PROCESOS     ::::::::::::::\n");
-    seq_printf(m, "\nTotal running processes: %d .\n", proc_count_ejecucion());
-    seq_printf(m, "\nTotal zombie processes: %d .\n", proc_count_zombie());
-    seq_printf(m, "\nTotal interrumpidos processes: %d .\n", proc_count_interrumpidos());
-    seq_printf(m, "\nTotal suspendidos processes: %d .\n", proc_count_suspendidos());
-    seq_printf(m, "\nTotal detenidos processes: %d .\n", proc_count_detenidos());
-    seq_printf(m, "\nTotal processes: %d .\n", proc_count());
+    int count_exec = proc_count_ejecucion();
+    seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
+    // seq_printf(m, "\nTotal zombie processes: %d .\n", proc_count_zombie());
+    // seq_printf(m, "\nTotal interrumpidos processes: %d .\n", proc_count_interrumpidos());
+    // seq_printf(m, "\nTotal suspendidos processes: %d .\n", proc_count_suspendidos());
+    // seq_printf(m, "\nTotal detenidos processes: %d .\n", proc_count_detenidos());
+    // seq_printf(m, "\nTotal processes: %d .\n", proc_count());
     seq_printf(m, "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
     return 0;
 }
