@@ -100,7 +100,7 @@ func selectCommands() {
 		case "1":
 			cmdIOTOP()
 		case "2":
-			println("TOP")
+			cmdTOP()
 		case "3":
 			println("Salir")
 			userName = ""
@@ -120,7 +120,7 @@ func cmdIOTOP() {
 		println("**************************************************************************")
 		println("***                              IOTOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** USUARIO: ", userName)
+		fmt.Println("*** 						USUARIO: 								  ***", userName)
 		println("**************************************************************************\n")
 
 		out, err := exec.Command("iotop", "-b", "-n1").Output()
@@ -150,10 +150,11 @@ func cmdTOP() {
 		println("**************************************************************************")
 		println("***                              TOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** USUARIO: ", userName)
+		fmt.Println("*** 						USUARIO: 								  ***", userName)
 		println("**************************************************************************\n")
 
-		out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
+		// out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
+		out, err := exec.Command("/usr/bin/cat", "/proc/proc_mod").Output()
 		if err != nil {
 			log.Fatal(err)
 		}
