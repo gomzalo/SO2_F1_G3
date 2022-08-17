@@ -11,6 +11,9 @@ MODULE_DESCRIPTION("Basic process information Linux module.");
 MODULE_VERSION("0.01");
 
 struct task_struct *task;
+struct task_struct *task_child;
+struct list_head *list;
+int extra;
 int extra2;
 
 char * get_task_state(long state) {
@@ -42,7 +45,10 @@ char * get_task_state(long state) {
 static int proc_llenar_archivo(struct seq_file *m, void *v) {
     
     #define K(x) ((x) << (PAGE_SHIFT - 10))
+
+    seq_printf(m, "[\n");
     extra2 = 0;
+
     for_each_process(task) {
 
         if (extra2 == 0)
@@ -65,7 +71,42 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
         {
             seq_printf(m, "\"mm\"  : 0, ");
         }
+
+        seq_printf(m, "\"sub\": [");
+
+        extra = 0;
+
+        list_for_each(list, &task->children)
+        {
+
+            if (extra == 0)
+            {
+
+                extra = 1;
+            }
+            else
+            {
+
+                seq_printf(m, ",");
+            }
+
+            task_child = list_entry(list, struct task_struct, sibling);
+            seq_printf(m, "\n     { \"PID\" : %d, \"Nombre\" : \"%s\" , \"Estado\" : %ld , \"uid\" : %i,  ", task_child->pid, task_child->comm, task_child->state, task_child->cred->uid.val);
+            if (task->mm)
+            {
+                seq_printf(m, "\"mm\"  : %8lu }", K(task->mm->total_vm)/1024);
+            }
+            else
+            {
+                seq_printf(m, "\"mm\"  : 0 }");
+            }
+        }
+
+        extra = 0;
+        seq_printf(m, "]\n}\n");
     }
+
+    seq_printf(m, "\n]\n");
     return 0;
 }
 
