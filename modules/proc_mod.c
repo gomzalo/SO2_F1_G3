@@ -10,6 +10,22 @@ MODULE_AUTHOR("sopes2");
 MODULE_DESCRIPTION("Basic process information Linux module.");
 MODULE_VERSION("0.01");
 
+char * get_task_state(long state) {
+    switch (state)
+    {
+    case 0:
+        return "Running";
+    case 1:
+        return "Process";
+    case 32:
+        return "Zombie";
+    case 1026:
+        return "Stopped";
+    default:
+        return "Other";
+    }
+}
+
 static int writeFile(struct seq_file *archivo, void *v)
 {
 
@@ -29,7 +45,8 @@ static int atOpen(struct inode *inode, struct file *file)
 
 static const struct proc_ops ops = {
     .proc_open = atOpen,
-    .proc_read = seq_read};
+    .proc_read = seq_read
+};
 
 int proc_count(void)
 {
@@ -38,7 +55,7 @@ int proc_count(void)
     
     for_each_process(thechild)
     {
-        //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+        pr_info("== %s [%d]\n", thechild->comm, thechild->state);
         i++;
     }
     return i;
@@ -46,17 +63,17 @@ int proc_count(void)
 
 
 
-int proc_count_zombie(void)
+int proc_count_zombie()
 {
     int i = 0;
     struct task_struct *thechild;
     
     for_each_process(thechild)
     {
-        if (thechild->pid==32)
+        if (thechild->state==32)
         {
             /* code */
-            //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -72,10 +89,10 @@ int proc_count_interrumpidos(void)
     
     for_each_process(thechild)
     {
-        if (thechild->pid==1026)
+        if (thechild->state==1026)
         {
             /* code */
-            //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -91,10 +108,10 @@ int proc_count_ejecucion(void)
     
     for_each_process(thechild)
     {
-        if (thechild->pid==0)
+        if (thechild->state==0)
         {
             /* code */
-            //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -110,10 +127,10 @@ int proc_count_suspendidos(void)
     
     for_each_process(thechild)
     {
-        if (thechild->pid==1)
+        if (thechild->state==1)
         {
             /* code */
-            //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -129,10 +146,10 @@ int proc_count_detenidos(void)
     
     for_each_process(thechild)
     {
-        if (thechild->pid!=0 && thechild->pid!=1 && thechild->pid!=32 && thechild->pid!=1026)  
+        if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
         {
             /* code */
-            //pr_info("== %s [%d]\n", thechild->comm, thechild->pid);
+            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
             i++;
         }
         
