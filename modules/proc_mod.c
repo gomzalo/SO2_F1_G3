@@ -55,7 +55,7 @@ int proc_count(void)
     
     for_each_process(thechild)
     {
-        pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+        pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
         i++;
     }
     return i;
@@ -73,7 +73,7 @@ int proc_count_zombie()
         if (thechild->state==32)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -92,7 +92,7 @@ int proc_count_interrumpidos(void)
         if (thechild->state==1026)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -111,7 +111,7 @@ int proc_count_ejecucion(void)
         if (thechild->state==0)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -130,7 +130,7 @@ int proc_count_suspendidos(void)
         if (thechild->state==1)
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
             i++;
         }
         
@@ -149,7 +149,7 @@ int proc_count_detenidos(void)
         if (thechild->state!=0 && thechild->state!=1 && thechild->state!=32 && thechild->state!=1026)  
         {
             /* code */
-            pr_info("== %s [%d]\n", thechild->comm, thechild->state);
+            pr_info("== %s [%ld]\n", thechild->comm, thechild->state);
             i++;
         }
         
