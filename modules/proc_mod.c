@@ -41,6 +41,7 @@ char * get_task_state(long state) {
 //     seq_printf(archivo, "==============================\n");
 //     return 0;
 // }
+int count_exec = proc_count_ejecucion();
 
 static int proc_llenar_archivo(struct seq_file *m, void *v) {
     
@@ -108,7 +109,7 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
     seq_printf(m, "\n]\n");
     // Resumen de procesos
     seq_printf(m, "\n::::::::::::::     RESUMEN DE PROCESOS     ::::::::::::::\n");
-    int count_exec = proc_count_ejecucion();
+    
     seq_printf(m, "\nTotal running processes: %d .\n", count_exec);
     // seq_printf(m, "\nTotal zombie processes: %d .\n", proc_count_zombie());
     // seq_printf(m, "\nTotal interrumpidos processes: %d .\n", proc_count_interrumpidos());
