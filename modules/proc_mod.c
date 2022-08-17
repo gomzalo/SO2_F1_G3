@@ -63,7 +63,7 @@ int proc_count(void)
 
 
 
-int proc_count_zombie()
+int proc_count_zombie(void)
 {
     int i = 0;
     struct task_struct *thechild;
