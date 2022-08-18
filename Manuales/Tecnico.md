@@ -21,6 +21,12 @@
 - Compilador GoLang instalado
 - Headers genericos del Kernel de Linux
 
+## Instalar iotop
+
+```sh
+sudo apt install iotop -y
+```
+
 ## Instalar GO
 
 ### Descargar Go
@@ -45,15 +51,14 @@ curl -OL https://golang.org/dl/go1.19.linux-amd64.tar.gz
 
 Validar el archivo descargado
 
-
 ```sh
-sha256sum go1.16.7.linux-amd64.tar.gz
+sha256sum go1.19.linux-amd64.tar.gz
 ```
 
 Descomprimir el archivo descargado y copiarlo a la carpeta `/usr/local`
 
 ```sh
-sudo tar -C /usr/local -xvf go1.16.7.linux-amd64.tar.gz
+sudo tar -C /usr/local -xvf go1.19.linux-amd64.tar.gz
 ```
 
 ### Configurar Variable de entorno
@@ -65,7 +70,15 @@ sudo nano ~/.profile
 ```
 
 ```sh
+# ... contenido del archivo
+
 export PATH=$PATH:/usr/local/go/bin
+```
+
+Refrescar el archivo `profile` por los cambios recientes
+
+```sh
+source ~/.profile
 ```
 
 ### Configurar entorno Go
@@ -73,7 +86,7 @@ export PATH=$PATH:/usr/local/go/bin
 Crear un archivo mod para importar paquetes instalados
 
 ```sh
-go mod init proyecto
+go mod init main
 ```
 
 ### Compilar archivo Go
@@ -104,7 +117,7 @@ Compilar kernel de archivo `.c`
 make
 ```
 
-Instalar módulo Kernel
+Instalar módulo Kernel (Archivo con formato `.ko`)
 
 ```sh
 sudo insmod [nombreModulo].ko
