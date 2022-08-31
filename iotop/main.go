@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"syscall"
 )
@@ -122,21 +123,27 @@ func bitacora() {
 	println("**************************************************************************")
 	println("***                              IOTOP                                 ***")
 	println("**************************************************************************")
-	println("[\n")
+	cadena := "[\n"
 	for k, v := range logMap {
-		println("\t{\n")
-		fmt.Printf("\t\t\"usuario\": %s,\n", k)
-		fmt.Println("\t\t\"actividad\": [\n")
+		cadena += "\t{\n"
+		cadena += "\t\t\"usuario\": " + k + "\n"
+		cadena += "\t\t\"actividad\": [\n"
 		for l, w := range v {
-			println("\t\t\t{\n")
-			fmt.Printf("\t\t\t\t\"funcion\": %s,\n", l)
-			fmt.Printf("\t\t\t\t\"ejecutandose\": %d,\n", w)
-			println("\t\t\t},\n")
+			cadena += "\t\t\t{\n"
+			cadena += "\t\t\t\t\"funcion\": " + l + ",\n"
+			cadena += "\t\t\t\t\"ejecutandose\": " + strconv.Itoa(w) + ",\n"
+			cadena += "\t\t\t},\n"
 		}
-		println("\t\t]\n")
-		println("\t},\n")
+		cadena += "\t\t]\n"
+		cadena += "\t},\n"
 	}
-	println("]\n")
+	cadena += "]\n"
+	
+	b := []byte(cadena)
+	err := ioutil.WriteFile("bitacora.json", b, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func selectCommands() {
