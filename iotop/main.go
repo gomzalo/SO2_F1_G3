@@ -143,6 +143,8 @@ func bitacora() {
 	err := ioutil.WriteFile("bitacora.json", b, 0644)
 	if err != nil {
 		log.Fatal(err)
+	} else {
+		println("Reporte de bitacora generado con exito.\nEjecutar cat bitacora.json para verlo")
 	}
 }
 
