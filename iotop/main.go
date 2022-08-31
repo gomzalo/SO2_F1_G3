@@ -1,18 +1,18 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
-	"syscall"
-	"bufio"
 	"strings"
+	"syscall"
 )
 
 var userName string
-
+var logMap = map[string]map[string]int{}
 
 func main() {
 	// MAIN MENU
@@ -43,12 +43,12 @@ func main() {
 		case "1":
 			newExec()
 		case "2":
-			println("Reporte")
+			reporte()
 		case "3":
-			println("Salir")
+			println("See you later 😃!!!")
 			return
 		default:
-			println("Opción no válida")
+			println("Opción no válida 🥸")
 		}
 	}
 }
@@ -75,18 +75,73 @@ func newExec() {
 		case "1":
 			println("Ingresar nombre")
 			fmt.Scanln(&userName)
+			logMap[userName] = map[string]int{}
 			selectCommands()
+			userName = ""
 		case "2":
 			println("Salir")
 			return
 		default:
-			println("Opción no válida")
+			println("Opción no válida 🥸")
 		}
 	}
 }
 
+func reporte() {
+	clearConsole()
+	
+	println("**************************************************************************")
+	println("***                             REPORTES                               ***")
+	println("**************************************************************************")
+	
+	menu := make(map[string]string)
+	menu["1"] = "Bitácora"
+	menu["2"] = "Regresar"
+	for {
+		for k, v := range menu {
+			println(k, v)
+		}
+	
+		var choice string
+		println("Ingrese su opción: ")
+		fmt.Scanln(&choice)
+		switch choice {
+		case "1":
+			// BITACORA
+			bitacora()
+		case "2":
+			println("Salir")
+			return
+		default:
+			println("Opción no válida 🥸")
+		}
+	}
+}
+
+func bitacora() {
+	println("**************************************************************************")
+	println("***                              IOTOP                                 ***")
+	println("**************************************************************************")
+	println("[\n")
+	for k, v := range logMap {
+		println("\t{\n")
+		fmt.Printf("\t\t\"usuario\": %s,\n", k)
+		fmt.Println("\t\t\"actividad\": [\n")
+		for l, w := range v {
+			println("\t\t\t{\n")
+			fmt.Printf("\t\t\t\t\"funcion\": %s,\n", l)
+			fmt.Printf("\t\t\t\t\"ejecutandose\": %d,\n", w)
+			println("\t\t\t},\n")
+		}
+		println("\t\t]\n")
+		println("\t},\n")
+	}
+	println("]\n")
+}
+
 func selectCommands() {
 	println("\n**************************************************************************\n")
+	fmt.Println(userName)
 	// COMMAND MENU
 	menu := make(map[string]string)
 	menu["1"] = "IOTOP"
@@ -106,16 +161,14 @@ func selectCommands() {
 			cmdIOTOP()
 		case "2":
 			cmdTOP()
-		case "3":	
-			
+		case "3":
 			cmdSTRACE()
 		case "4":
 			println("Salir")
-			userName = ""
 			clearConsole()
 			return
 		default:
-			println("Opción no válida")
+			println("Opción no válida 🥸")
 		}
 	}
 }
@@ -124,6 +177,7 @@ func cmdIOTOP() {
 	var answer string
 	for {
 		clearConsole()
+		logMap[userName]["IOTOP"]++
 
 		println("**************************************************************************")
 		println("***                              IOTOP                                 ***")
@@ -145,7 +199,7 @@ func cmdIOTOP() {
 		} else if answer == "y" || answer == "Y" {
 			continue
 		} else {
-			println("Respuesta no válida.")
+			println("Respuesta no válida 🥸")
 		}
 	}
 }
@@ -154,6 +208,7 @@ func cmdTOP() {
 	var answer string
 	for {
 		clearConsole()
+		logMap[userName]["TOP"]++
 
 		println("**************************************************************************")
 		println("***                              TOP                                 ***")
@@ -176,15 +231,17 @@ func cmdTOP() {
 		} else if answer == "y" || answer == "Y" {
 			continue
 		} else {
-			println("Respuesta no válida.")
+			println("Respuesta no válida 🥸")
 		}
 	}
-
 }
 
 func cmdSTRACE() {
 	var answer string
 	for {
+		clearConsole()
+		logMap[userName]["STRACE"]++
+		
 		for {
 			println("Ingrese un comando: ")
 			com := bufio.NewScanner(os.Stdin)
@@ -207,10 +264,9 @@ func cmdSTRACE() {
 		} else if answer == "y" || answer == "Y" {
 			continue
 		} else {
-			println("Respuesta no válida.")
+			println("Respuesta no válida 🥸")
 		}
 	}
-
 }
 
 func clearConsole() {
