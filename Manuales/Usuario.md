@@ -2,30 +2,58 @@
 
 - [**Manual de usuario**](#manual-de-usuario)
 - [Fase 1](#fase-1)
+  - [Menu Principal Meta OS System](#menu-principal-meta-os-system)
+  - [Ingresar Datos](#ingresar-datos)
+  - [Menu Opciones](#menu-opciones)
+  - [Ingreso de Datos](#ingreso-de-datos)
+  - [Resultados IOTOP](#resultados-iotop)
+  - [Resultados TOP](#resultados-top)
 - [Fase 2](#fase-2)
   - [SYSCALL](#syscall)
+  - [Reporte JSON](#reporte-json)
 
 # Fase 1
+
+## Menu Principal Meta OS System
+
+En este apartado puedes seleccionar cada una de las caracteristicas necesarias a utilizar durante esta fase.
+
+![Menu Principal](img/F1/menu.png)
+## Ingresar Datos
+![Menu Principal](img/F1/menu2.png)
+## Menu Opciones
+![Menu Principal](img/F1/top.png)
+## Ingreso de Datos
+![Menu Principal](img/F1/nombre.png)
+## Resultados IOTOP
+![Menu Principal](img/F1/iotop.png)
+## Resultados TOP
+![Menu Principal](img/F1/rsultTop.png)
 
 # Fase 2
 
 ## SYSCALL
 
-Ingresar a la aplicación y elegir la opción *Nueva ejecución*.
+1. Ingresar a la aplicación y elegir la opción *1. Nueva ejecución*, luego ingresar a la opción *3. STRACE* y seleccionar la opción *1. Ingresar nombre*.
+![Menu Strace](img/F2/MenuStrace.png)
 
+2. Ingresar un comando, como 
+   ```sh
+   echo hello
+   ```
+   y el sistema debera de mostrar los procesos que se ejecutan en el sistema.
+   ![Strace](img/F2/Strace.png)
 
+## Reporte JSON
 
+1. Ingresar a la aplicación y elegir la opción *2. Reporte*.
+   ![Menu Reporte](img/F2/MenuReportes.png)
+2. Seleccionar la opción *1. Bitácora*; el sistema debera de indicar que se genero el reporte.
+   ![Reporte Generado](img/F2/ReporteGenerado.png)
+3. Para visualizar el reporte, nos salimos de la aplicación y nos dirigimos a la carpeta del proyecto, se ingresa el comando:
+   ```sh
+   cat bitacora.json
+   ```
+   siendo *bitacora.json* el nombre del archivo que se genero.
+   ![Reporte JSON](img/F2/ReporteJSON.png)
 
-## Menu Principal GO
-En este apartado puedes seleccionar cad auna de las Caracteristicas necesarias a utilizar durante esta fase
-![Menu Principal](Images/menu.png)
-## Ingresar Datos
-![Menu Principal](Images/menu2.png)
-## Menu Opciones
-![Menu Principal](Images/top.png)
-## Ingreso de Datos
-![Menu Principal](Images/nombre.png)
-## Resultados IOTOP
-![Menu Principal](Images/iotop.png)
-## Resultados TOP
-![Menu Principal](Images/rsultTop.png)
