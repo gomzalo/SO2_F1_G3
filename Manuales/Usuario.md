@@ -10,3 +10,8 @@
 # Fase 2
 
 ## SYSCALL
+
+Ingresar a la aplicación y elegir la opción *Nueva ejecución*.
+
+
+
