@@ -133,3 +133,14 @@ cat /proc/[nombreModulo]
 ```
 
 # Fase 2
+
+## Implementacion de SYSCALL - Strace
+
+![Menu Principal](img/F2/codeStrace.png)
+
+## Reportes 
+
+![Menu Principal](img/F2/codeExportarReporte.png)
+
+## Actualizacion de Consola
+![Menu Principal](img/F2/codeActualizacionMensajes.png)
