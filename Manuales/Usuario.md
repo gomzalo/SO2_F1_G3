@@ -1,155 +1,59 @@
-# Sistemas Operativos 2 - Fase 1 - Grupo 3
+# **Manual de usuario**
 
-- [Sistemas Operativos 2 - Fase 1 - Grupo 3](#sistemas-operativos-2---fase-1---grupo-3)
-  - [Requisitos del sistema](#requisitos-del-sistema)
-  - [Instalar GO](#instalar-go)
-    - [Descargar Go](#descargar-go)
-    - [Configurar Variable de entorno](#configurar-variable-de-entorno)
-    - [Configurar entorno Go](#configurar-entorno-go)
-    - [Compilar archivo Go](#compilar-archivo-go)
-  - [Instalar GCC](#instalar-gcc)
-    - [Instalar cabeceras linux](#instalar-cabeceras-linux)
-    - [Instalar dependencias](#instalar-dependencias)
-  - [Kernel](#kernel)
+- [**Manual de usuario**](#manual-de-usuario)
+- [Fase 1](#fase-1)
+  - [Menu Principal Meta OS System](#menu-principal-meta-os-system)
+  - [Ingresar Datos](#ingresar-datos)
+  - [Menu Opciones](#menu-opciones)
+  - [Ingreso de Datos](#ingreso-de-datos)
+  - [Resultados IOTOP](#resultados-iotop)
+  - [Resultados TOP](#resultados-top)
+- [Fase 2](#fase-2)
+  - [SYSCALL](#syscall)
+  - [Reporte JSON](#reporte-json)
 
-## Requisitos del sistema
+# Fase 1
 
-- Sistema GNU/Linux
-- 1 Gb o más de RAM
-- 10 Gb o más de Almacenamiento
-- Compilador GCC instalado
-- Compilador GoLang instalado
-- Headers genericos del Kernel de Linux
+## Menu Principal Meta OS System
 
-## Menu Principal GO
-En este apartado puedes seleccionar cad auna de las Caracteristicas necesarias a utilizar durante esta fase
+En este apartado puedes seleccionar cada una de las caracteristicas necesarias a utilizar durante esta fase.
 
-![Menu Principal](Images/menu.png)
-
+![Menu Principal](img/F1/menu.png)
 ## Ingresar Datos
-![Menu Principal](Images/menu2.png)
-
-
+![Menu Principal](img/F1/menu2.png)
 ## Menu Opciones
-![Menu Principal](Images/top.png)
-
-
-
+![Menu Principal](img/F1/top.png)
 ## Ingreso de Datos
-![Menu Principal](Images/nombre.png)
-
-
+![Menu Principal](img/F1/nombre.png)
 ## Resultados IOTOP
-![Menu Principal](Images/iotop.png)
-
+![Menu Principal](img/F1/iotop.png)
 ## Resultados TOP
-![Menu Principal](Images/rsultTop.png)
+![Menu Principal](img/F1/rsultTop.png)
 
-rsultTop
+# Fase 2
 
-## Instalar GO
+## SYSCALL
 
-### Descargar Go
+1. Ingresar a la aplicación y elegir la opción *1. Nueva ejecución*, luego ingresar a la opción *3. STRACE* y seleccionar la opción *1. Ingresar nombre*.
+![Menu Strace](img/F2/MenuStrace.png)
 
-Acceder al servidor
+2. Ingresar un comando, como 
+   ```sh
+   echo hello
+   ```
+   y el sistema debera de mostrar los procesos que se ejecutan en el sistema.
+   ![Strace](img/F2/Strace.png)
 
-```sh
-ssh usuario@server_ip
-```
+## Reporte JSON
 
-Moverse a la carpeta de usuario
+1. Ingresar a la aplicación y elegir la opción *2. Reporte*.
+   ![Menu Reporte](img/F2/MenuReportes.png)
+2. Seleccionar la opción *1. Bitácora*; el sistema debera de indicar que se genero el reporte.
+   ![Reporte Generado](img/F2/ReporteGenerado.png)
+3. Para visualizar el reporte, nos salimos de la aplicación y nos dirigimos a la carpeta del proyecto, se ingresa el comando:
+   ```sh
+   cat bitacora.json
+   ```
+   siendo *bitacora.json* el nombre del archivo que se genero.
+   ![Reporte JSON](img/F2/ReporteJSON.png)
 
-```sh
-cd ~
-```
-
-Descargar los archivos necesarios para compilar Go
-
-```sh
-curl -OL https://golang.org/dl/go1.19.linux-amd64.tar.gz
-```
-
-Validar el archivo descargado
-
-
-```sh
-sha256sum go1.16.7.linux-amd64.tar.gz
-```
-
-Descomprimir el archivo descargado y copiarlo a la carpeta `/usr/local`
-
-```sh
-sudo tar -C /usr/local -xvf go1.16.7.linux-amd64.tar.gz
-```
-
-### Configurar Variable de entorno
-
-Con el editor de preferencia, abrir el archivo `profile` y agregar la ruta de los binarios de go
-
-```sh
-sudo nano ~/.profile
-```
-
-```sh
-export PATH=$PATH:/usr/local/go/bin
-```
-
-### Configurar entorno Go
-
-Crear un archivo mod para importar paquetes instalados
-
-```sh
-go mod init proyecto
-```
-
-### Compilar archivo Go
-
-```sh
-go build .
-```
-
-## Instalar GCC
-
-### Instalar cabeceras linux
-
-```sh
-sudo apt install linux-headers-$(uname -r)
-```
-
-### Instalar dependencias
-
-```sh
-sudo apt install build-essential
-```
-
-## Kernel
-
-Compilar kernel de archivo `.c`
-
-```sh
-make
-```
-
-Instalar módulo Kernel
-
-```sh
-sudo insmod [nombreModulo].ko
-```
-
-Mostrar mensajes de consola al instalar el módulo Kernel
-
-```sh
-sudo dmesg
-```
-
-Desinstalar módulo Kernel
-
-```sh
-sudo rmmod [nombreModulo]
-```
-
-Revisar archivos escrito desde Kernel instalado
-
-```sh
-cat /proc/[nombreModulo]
-```

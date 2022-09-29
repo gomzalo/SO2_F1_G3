@@ -1,6 +1,7 @@
-# Sistemas Operativos 2 - Fase 1 - Grupo 3
+# **Manual técnico**
 
-- [Sistemas Operativos 2 - Fase 1 - Grupo 3](#sistemas-operativos-2---fase-1---grupo-3)
+- [**Manual técnico**](#manual-técnico)
+- [Fase 1](#fase-1)
   - [Requisitos del sistema](#requisitos-del-sistema)
   - [Instalar GO](#instalar-go)
     - [Descargar Go](#descargar-go)
@@ -11,6 +12,9 @@
     - [Instalar cabeceras linux](#instalar-cabeceras-linux)
     - [Instalar dependencias](#instalar-dependencias)
   - [Kernel](#kernel)
+- [Fase 2](#fase-2)
+
+# Fase 1
 
 ## Requisitos del sistema
 
@@ -20,12 +24,6 @@
 - Compilador GCC instalado
 - Compilador GoLang instalado
 - Headers genericos del Kernel de Linux
-
-## Instalar iotop
-
-```sh
-sudo apt install iotop -y
-```
 
 ## Instalar GO
 
@@ -51,14 +49,15 @@ curl -OL https://golang.org/dl/go1.19.linux-amd64.tar.gz
 
 Validar el archivo descargado
 
+
 ```sh
-sha256sum go1.19.linux-amd64.tar.gz
+sha256sum go1.16.7.linux-amd64.tar.gz
 ```
 
 Descomprimir el archivo descargado y copiarlo a la carpeta `/usr/local`
 
 ```sh
-sudo tar -C /usr/local -xvf go1.19.linux-amd64.tar.gz
+sudo tar -C /usr/local -xvf go1.16.7.linux-amd64.tar.gz
 ```
 
 ### Configurar Variable de entorno
@@ -70,15 +69,7 @@ sudo nano ~/.profile
 ```
 
 ```sh
-# ... contenido del archivo
-
 export PATH=$PATH:/usr/local/go/bin
-```
-
-Refrescar el archivo `profile` por los cambios recientes
-
-```sh
-source ~/.profile
 ```
 
 ### Configurar entorno Go
@@ -86,7 +77,7 @@ source ~/.profile
 Crear un archivo mod para importar paquetes instalados
 
 ```sh
-go mod init main
+go mod init proyecto
 ```
 
 ### Compilar archivo Go
@@ -117,7 +108,7 @@ Compilar kernel de archivo `.c`
 make
 ```
 
-Instalar módulo Kernel (Archivo con formato `.ko`)
+Instalar módulo Kernel
 
 ```sh
 sudo insmod [nombreModulo].ko
@@ -140,3 +131,16 @@ Revisar archivos escrito desde Kernel instalado
 ```sh
 cat /proc/[nombreModulo]
 ```
+
+# Fase 2
+
+## Implementacion de SYSCALL - Strace
+
+![Menu Principal](img/F2/codeStrace.png)
+
+## Reportes 
+
+![Menu Principal](img/F2/codeExportarReporte.png)
+
+## Actualizacion de Consola
+![Menu Principal](img/F2/codeActualizacionMensajes.png)
