@@ -90,11 +90,11 @@ func newExec() {
 
 func reporte() {
 	clearConsole()
-	
+
 	println("**************************************************************************")
 	println("***                             REPORTES                               ***")
 	println("**************************************************************************")
-	
+
 	menu := make(map[string]string)
 	menu["1"] = "Bitácora"
 	menu["2"] = "Regresar"
@@ -102,7 +102,7 @@ func reporte() {
 		for k, v := range menu {
 			println(k, v)
 		}
-	
+
 		var choice string
 		println("Ingrese su opción: ")
 		fmt.Scanln(&choice)
@@ -138,7 +138,7 @@ func bitacora() {
 		cadena += "\t},\n"
 	}
 	cadena += "]\n"
-	
+
 	b := []byte(cadena)
 	err := ioutil.WriteFile("bitacora.json", b, 0644)
 	if err != nil {
@@ -156,7 +156,8 @@ func selectCommands() {
 	menu["1"] = "IOTOP"
 	menu["2"] = "TOP"
 	menu["3"] = "STRACE"
-	menu["4"] = "Regresar"
+	menu["4"] = "MEMSIM"
+	menu["5"] = "Regresar"
 	for {
 		for k, v := range menu {
 			println(k, v)
@@ -173,6 +174,8 @@ func selectCommands() {
 		case "3":
 			cmdSTRACE()
 		case "4":
+			cmdMEMSIM()
+		case "5":
 			println("Salir")
 			clearConsole()
 			return
@@ -250,7 +253,7 @@ func cmdSTRACE() {
 	for {
 		clearConsole()
 		logMap[userName]["STRACE"]++
-		
+
 		for {
 			println("Ingrese un comando: ")
 			com := bufio.NewScanner(os.Stdin)
@@ -261,10 +264,43 @@ func cmdSTRACE() {
 				fmt.Println("*** USUARIO: ", userName)
 				println("**************************************************************************\n")
 				strace(strings.Fields(com.Text()))
-				break;
+				break
 			}
 		}
-		
+
+		println("¿Ejecutar de nuevo? (y/n): ")
+		fmt.Scanln(&answer)
+		if answer == "n" || answer == "N" {
+			clearConsole()
+			break
+		} else if answer == "y" || answer == "Y" {
+			continue
+		} else {
+			println("Respuesta no válida 🥸")
+		}
+	}
+}
+
+func cmdMEMSIM() {
+	var answer string
+	for {
+		clearConsole()
+		logMap[userName]["MEMSIM"]++
+
+		for {
+			println("Ingrese un comando: ")
+			com := bufio.NewScanner(os.Stdin)
+			if com.Scan() {
+				println("**************************************************************************")
+				println("***                            MEMORY SIMULATION                       ***")
+				println("**************************************************************************")
+				fmt.Println("*** USUARIO: ", userName)
+				println("**************************************************************************\n")
+				// strace(strings.Fields(com.Text()))
+				break
+			}
+		}
+
 		println("¿Ejecutar de nuevo? (y/n): ")
 		fmt.Scanln(&answer)
 		if answer == "n" || answer == "N" {
@@ -284,7 +320,7 @@ func clearConsole() {
 	c.Run()
 }
 
-func strace(command []string){
+func strace(command []string) {
 	var regs syscall.PtraceRegs
 	var ss syscallCounter
 
@@ -330,4 +366,8 @@ func strace(command []string){
 	}
 
 	ss.print()
+}
+
+func memsim() {
+
 }
