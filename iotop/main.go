@@ -389,8 +389,8 @@ func memsim(ciclos int, unidades string) {
 			go func() {
 				process := 1
 				defer wg.Done() // Mensaje region critica
-				work(process, value, size)
 				process++
+				work(process, value, size)
 			}()
 		}
 		wg.Wait()
