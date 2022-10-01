@@ -289,26 +289,20 @@ func cmdMEMSIM() {
 		clearConsole()
 		logMap[userName]["MEMSIM"]++
 
-		for {
-			println("Ingrese un comando: ")
-			com := bufio.NewScanner(os.Stdin)
-			if com.Scan() {
-				println("**************************************************************************")
-				println("***                            MEMORY SIMULATION                       ***")
-				println("**************************************************************************")
-				fmt.Println("*** USUARIO: ", userName)
-				println("**************************************************************************\n")
-				println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
-				var cycles int
-				fmt.Scanln(&cycles)
-				println("Ingrese las unidades de memoria (separados por coma): ")
-				var memUnits string
-				fmt.Scanln(&memUnits)
-				memsim(cycles, memUnits)
-				// strace(strings.Fields(com.Text()))
-				break
-			}
-		}
+		println("**************************************************************************")
+		println("***                            MEMORY SIMULATION                       ***")
+		println("**************************************************************************")
+		fmt.Println("*** USUARIO: ", userName)
+		println("**************************************************************************\n")
+
+		println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
+		var cycles int
+		fmt.Scanln(&cycles)
+
+		println("Ingrese las unidades de memoria (separados por coma): ")
+		var memUnits string
+		fmt.Scanln(&memUnits)
+		memsim(cycles, memUnits)
 
 		println("¿Ejecutar de nuevo? (y/n): ")
 		fmt.Scanln(&answer)
