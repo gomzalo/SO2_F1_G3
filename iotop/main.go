@@ -387,9 +387,9 @@ func memsim(ciclos int, unidades string) {
 		for j := size - 1; j >= 0; j-- {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
 			value := units_arr[j]
-			process = process + 1
 			go func() {
 				defer wg.Done() // Mensaje region critica
+				process = process + 1
 				work(process, value, size)
 			}()
 		}
