@@ -298,7 +298,10 @@ func cmdMEMSIM() {
 		println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
 		var cycles int
 		fmt.Scanln(&cycles)
-
+		if cycles <= 0 {
+			println("Cantidad de ciclos no válida.")
+			continue
+		}
 		println("Ingrese las unidades de memoria (separados por coma): ")
 		var memUnits string
 		fmt.Scanln(&memUnits)
@@ -377,8 +380,8 @@ func memsim(ciclos int, unidades string) {
 	// now := time.Now()
 	var wg sync.WaitGroup // Declarando nuestro wait group
 	// wg.Add(ciclos)      // Indicamos la cantidad de rutinas a esperar
-	for i := 0; i < ciclos; i++ {
-		fmt.Println("Ciclo de trabajo: ", ciclos)
+	for i := 1; i <= ciclos; i++ {
+		fmt.Println("Ciclo de trabajo: ", i)
 		for key, value := range units_arr {
 			wg.Add(i)
 			go func() {
