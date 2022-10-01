@@ -376,6 +376,7 @@ func strace(command []string) {
 
 func memsim(ciclos int, unidades string) {
 	units_arr := strings.Split(unidades, ",")
+	size := len(units_arr)
 	now := time.Now()
 	for i := 1; i <= ciclos; i++ {
 		var wg sync.WaitGroup // Declarando nuestro wait group
@@ -385,11 +386,11 @@ func memsim(ciclos int, unidades string) {
 			go func() {
 				units_arr[key] = strings.TrimSpace(value)
 				defer wg.Done() // Mensaje region critica
-				work(key, value)
+				work(key, value, size)
 			}()
 			wg.Wait()
 		}
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(time.Duration(size) * time.Second)
 		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
 
@@ -397,8 +398,8 @@ func memsim(ciclos int, unidades string) {
 	fmt.Println("La rutina principal ha terminado")
 }
 
-func work(ciclo int, unidad string) {
+func work(ciclo int, unidad string, size int) {
 	fmt.Println("| ⌚ El proceso 💼 # ", ciclo+1, ", empezó a trabajar con la unidad: '", unidad, "' |")
-	time.Sleep(time.Second)
+	time.Sleep(time.Duration(size) * time.Millisecond)
 	fmt.Println("| ✅ El proceso 💼 # ", ciclo+1, ", terminó de trabajar con la unidad: '", unidad, "' |")
 }
