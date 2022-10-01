@@ -378,9 +378,9 @@ func memsim(ciclos int, unidades string) {
 	units_arr := strings.Split(unidades, ",")
 	size := len(units_arr)
 	now := time.Now()
+	var process int = 0
 	fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 	for i := 1; i <= ciclos; i++ {
-		process := 0
 		var wg sync.WaitGroup // Declarando nuestro wait group
 		fmt.Println("	::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
 		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
