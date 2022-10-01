@@ -26,5 +26,5 @@ func main() { // Main tiene una rutina asignada por defecto
 
 func work() {
 	time.Sleep(500 * time.Millisecond)
-	fmt.Println("Working...")
+	fmt.Println("Rutina work esta trabajando")
 }
