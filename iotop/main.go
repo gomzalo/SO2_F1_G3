@@ -9,7 +9,9 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
+	"time"
 )
 
 var userName string
@@ -90,11 +92,11 @@ func newExec() {
 
 func reporte() {
 	clearConsole()
-	
+
 	println("**************************************************************************")
 	println("***                             REPORTES                               ***")
 	println("**************************************************************************")
-	
+
 	menu := make(map[string]string)
 	menu["1"] = "Bitácora"
 	menu["2"] = "Regresar"
@@ -102,7 +104,7 @@ func reporte() {
 		for k, v := range menu {
 			println(k, v)
 		}
-	
+
 		var choice string
 		println("Ingrese su opción: ")
 		fmt.Scanln(&choice)
@@ -138,7 +140,7 @@ func bitacora() {
 		cadena += "\t},\n"
 	}
 	cadena += "]\n"
-	
+
 	b := []byte(cadena)
 	err := ioutil.WriteFile("bitacora.json", b, 0644)
 	if err != nil {
@@ -156,7 +158,8 @@ func selectCommands() {
 	menu["1"] = "IOTOP"
 	menu["2"] = "TOP"
 	menu["3"] = "STRACE"
-	menu["4"] = "Regresar"
+	menu["4"] = "MEMSIM"
+	menu["5"] = "Regresar"
 	for {
 		for k, v := range menu {
 			println(k, v)
@@ -173,6 +176,8 @@ func selectCommands() {
 		case "3":
 			cmdSTRACE()
 		case "4":
+			cmdMEMSIM()
+		case "5":
 			println("Salir")
 			clearConsole()
 			return
@@ -191,7 +196,7 @@ func cmdIOTOP() {
 		println("**************************************************************************")
 		println("***                              IOTOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** USUARIO: ", userName)
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
 		println("**************************************************************************\n")
 
 		out, err := exec.Command("iotop", "-b", "-n1").Output()
@@ -222,7 +227,7 @@ func cmdTOP() {
 		println("**************************************************************************")
 		println("***                              TOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** USUARIO: ", userName)
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
 		println("**************************************************************************\n")
 
 		// out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
@@ -250,7 +255,7 @@ func cmdSTRACE() {
 	for {
 		clearConsole()
 		logMap[userName]["STRACE"]++
-		
+
 		for {
 			println("Ingrese un comando: ")
 			com := bufio.NewScanner(os.Stdin)
@@ -258,13 +263,50 @@ func cmdSTRACE() {
 				println("**************************************************************************")
 				println("***                              STRACE SYSTEM                         ***")
 				println("**************************************************************************")
-				fmt.Println("*** USUARIO: ", userName)
+				fmt.Println("*** 				USUARIO: ", userName, "				***")
 				println("**************************************************************************\n")
 				strace(strings.Fields(com.Text()))
-				break;
+				break
 			}
 		}
-		
+
+		println("¿Ejecutar de nuevo? (y/n): ")
+		fmt.Scanln(&answer)
+		if answer == "n" || answer == "N" {
+			clearConsole()
+			break
+		} else if answer == "y" || answer == "Y" {
+			continue
+		} else {
+			println("Respuesta no válida 🥸")
+		}
+	}
+}
+
+func cmdMEMSIM() {
+	var answer string
+	for {
+		clearConsole()
+		logMap[userName]["MEMSIM"]++
+
+		println("**************************************************************************")
+		println("***                            MEMORY SIMULATION                       ***")
+		println("**************************************************************************")
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
+		println("**************************************************************************\n")
+
+		println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
+		var cycles int
+		fmt.Scanln(&cycles)
+		if cycles <= 0 {
+			println("Cantidad de ciclos no válida.")
+			continue
+		}
+		println("Ingrese las unidades de memoria (separados por coma): ")
+		var memUnits string
+		fmt.Scanln(&memUnits)
+		memsim(cycles, memUnits)
+
 		println("¿Ejecutar de nuevo? (y/n): ")
 		fmt.Scanln(&answer)
 		if answer == "n" || answer == "N" {
@@ -284,7 +326,7 @@ func clearConsole() {
 	c.Run()
 }
 
-func strace(command []string){
+func strace(command []string) {
 	var regs syscall.PtraceRegs
 	var ss syscallCounter
 
@@ -330,4 +372,37 @@ func strace(command []string){
 	}
 
 	ss.print()
+}
+
+func memsim(ciclos int, unidades string) {
+	units_arr := strings.Split(unidades, ",")
+	size := len(units_arr)
+	now := time.Now()
+	var process int = 0
+	fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+	for i := 1; i <= ciclos; i++ {
+		var wg sync.WaitGroup // Declarando nuestro wait group
+		fmt.Println("	::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+		for j := size - 1; j >= 0; j-- {
+			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
+			value := units_arr[j]
+			go func() {
+				defer wg.Done() // Mensaje region critica
+				process = process + 1
+				work(process, value, size)
+			}()
+		}
+		wg.Wait()
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+	}
+
+	fmt.Println("Ha transcurrido: ", time.Since(now))
+	fmt.Println("La rutina principal ha terminado")
+}
+
+func work(proceso int, unidad string, tam int) {
+	fmt.Println("| ⌚ El proceso 💼 # ", proceso, ", empezó a trabajar con la unidad: '", unidad, "' |")
+	time.Sleep(time.Duration(tam) * time.Millisecond)
+	fmt.Println("| ✅ El proceso 💼 # ", proceso, ", terminó de trabajar con la unidad: '", unidad, "' |")
 }
