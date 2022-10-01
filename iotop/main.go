@@ -388,8 +388,8 @@ func memsim(ciclos int, unidades string) {
 				defer wg.Done() // Mensaje region critica
 				work(key, value, size)
 			}()
-			wg.Wait()
 		}
+		wg.Wait()
 		time.Sleep(time.Duration(size) * time.Second)
 		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
