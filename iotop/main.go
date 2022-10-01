@@ -383,14 +383,13 @@ func memsim(ciclos int, unidades string) {
 	for i := 1; i <= ciclos; i++ {
 		fmt.Println("Ciclo de trabajo: ", i)
 		for key, value := range units_arr {
-			wg.Add(i)
+			wg.Add(1)
 			go func() {
 				units_arr[key] = strings.TrimSpace(value)
 				defer wg.Done() // Mensaje region critica
 				work(key, value)
 			}()
 			wg.Wait()
-			fmt.Println("| ✅ El proceso 💼 # ", key+1, ", terminó de trabajar con la unidad: '", value, "' |")
 		}
 	}
 
@@ -406,7 +405,7 @@ func memsim(ciclos int, unidades string) {
 }
 
 func work(ciclo int, unidad string) {
-
 	fmt.Println("| ⌚ El proceso 💼 # ", ciclo+1, ", empezó a trabajar con la unidad: '", unidad, "' |")
-	time.Sleep(5000 * time.Millisecond)
+	time.Sleep(500 * time.Millisecond)
+	fmt.Println("| ✅ El proceso 💼 # ", ciclo+1, ", terminó de trabajar con la unidad: '", unidad, "' |")
 }
