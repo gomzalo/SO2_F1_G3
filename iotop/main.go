@@ -376,14 +376,12 @@ func strace(command []string) {
 
 func memsim(ciclos int, unidades string) {
 	units_arr := strings.Split(unidades, ",")
-
-	// now := time.Now()
-	var wg sync.WaitGroup // Declarando nuestro wait group
-	// wg.Add(ciclos)      // Indicamos la cantidad de rutinas a esperar
+	now := time.Now()
 	for i := 1; i <= ciclos; i++ {
-		wg.Add(1)
+		var wg sync.WaitGroup // Declarando nuestro wait group
 		fmt.Println("::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
 		for key, value := range units_arr {
+			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
 			go func() {
 				units_arr[key] = strings.TrimSpace(value)
 				defer wg.Done() // Mensaje region critica
@@ -394,15 +392,8 @@ func memsim(ciclos int, unidades string) {
 		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
 
-	/*
-		En lugar de llamar a go work utilizamos una funcion anonima
-	*/
-
-	// ----------> FORK
-
-	// wg.Wait() // JOIN <----------
-	// fmt.Println("Ha transcurrido: ", time.Since(now))
-	// fmt.Println("La rutina principal ha terminado")
+	fmt.Println("Ha transcurrido: ", time.Since(now))
+	fmt.Println("La rutina principal ha terminado")
 }
 
 func work(ciclo int, unidad string) {
