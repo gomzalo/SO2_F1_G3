@@ -383,10 +383,11 @@ func memsim(ciclos int, unidades string) {
 		fmt.Println("::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
 		for j := 0; j < size; j++ {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
+			process := j + 1
 			value := units_arr[j]
 			go func() {
 				defer wg.Done() // Mensaje region critica
-				work(j+1, value, size)
+				work(process+1, value, size)
 			}()
 		}
 		wg.Wait()
@@ -397,8 +398,8 @@ func memsim(ciclos int, unidades string) {
 	fmt.Println("La rutina principal ha terminado")
 }
 
-func work(ciclo int, unidad string, size int) {
-	fmt.Println("| ⌚ El proceso 💼 # ", ciclo, ", empezó a trabajar con la unidad: '", unidad, "' |")
-	time.Sleep(time.Duration(size) * time.Millisecond)
-	fmt.Println("| ✅ El proceso 💼 # ", ciclo, ", terminó de trabajar con la unidad: '", unidad, "' |")
+func work(proceso int, unidad string, tam int) {
+	fmt.Println("| ⌚ El proceso 💼 # ", proceso, ", empezó a trabajar con la unidad: '", unidad, "' |")
+	time.Sleep(time.Duration(tam) * time.Millisecond)
+	fmt.Println("| ✅ El proceso 💼 # ", proceso, ", terminó de trabajar con la unidad: '", unidad, "' |")
 }
