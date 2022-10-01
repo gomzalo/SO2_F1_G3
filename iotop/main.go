@@ -390,7 +390,6 @@ func memsim(ciclos int, unidades string) {
 			}()
 		}
 		wg.Wait()
-		time.Sleep(time.Duration(size) * time.Second)
 		fmt.Println(":::::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
 
