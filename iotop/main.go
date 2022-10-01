@@ -379,8 +379,8 @@ func memsim(ciclos int, unidades string) {
 	// wg.Add(ciclos)      // Indicamos la cantidad de rutinas a esperar
 	for i := 0; i < ciclos; i++ {
 		fmt.Println("Ciclo de trabajo: ", ciclos)
-		wg.Add(i)
 		for key, value := range units_arr {
+			wg.Add(i)
 			go func() {
 				units_arr[key] = strings.TrimSpace(value)
 				defer wg.Done() // Mensaje region critica
