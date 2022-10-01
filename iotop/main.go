@@ -381,17 +381,17 @@ func memsim(ciclos int, unidades string) {
 	for i := 1; i <= ciclos; i++ {
 		var wg sync.WaitGroup // Declarando nuestro wait group
 		fmt.Println("::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
-		for key, value := range units_arr {
+		for j := 0; j <= size; j++ {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
+			value := units_arr[j]
 			go func() {
-				units_arr[key] = strings.TrimSpace(value)
 				defer wg.Done() // Mensaje region critica
-				work(key, value, size)
+				work(j+1, value, size)
 			}()
 		}
 		wg.Wait()
 		time.Sleep(time.Duration(size) * time.Second)
-		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::")
+		fmt.Println(":::::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
 
 	fmt.Println("Ha transcurrido: ", time.Since(now))
@@ -399,7 +399,7 @@ func memsim(ciclos int, unidades string) {
 }
 
 func work(ciclo int, unidad string, size int) {
-	fmt.Println("| ⌚ El proceso 💼 # ", ciclo+1, ", empezó a trabajar con la unidad: '", unidad, "' |")
+	fmt.Println("| ⌚ El proceso 💼 # ", ciclo, ", empezó a trabajar con la unidad: '", unidad, "' |")
 	time.Sleep(time.Duration(size) * time.Millisecond)
-	fmt.Println("| ✅ El proceso 💼 # ", ciclo+1, ", terminó de trabajar con la unidad: '", unidad, "' |")
+	fmt.Println("| ✅ El proceso 💼 # ", ciclo, ", terminó de trabajar con la unidad: '", unidad, "' |")
 }
