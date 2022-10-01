@@ -9,7 +9,9 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
+	"time"
 )
 
 var userName string
@@ -296,6 +298,13 @@ func cmdMEMSIM() {
 				println("**************************************************************************")
 				fmt.Println("*** USUARIO: ", userName)
 				println("**************************************************************************\n")
+				println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
+				var cycles int
+				fmt.Scanln(&cycles)
+				println("Ingrese las unidades de memoria (separados por coma): ")
+				var memUnits string
+				fmt.Scanln(&memUnits)
+				memsim(cycles, memUnits)
 				// strace(strings.Fields(com.Text()))
 				break
 			}
@@ -368,6 +377,34 @@ func strace(command []string) {
 	ss.print()
 }
 
-func memsim() {
+func memsim(ciclos int, unidades string) {
+	units_arr := strings.Split(unidades, ",")
 
+	// now := time.Now()
+	var wg sync.WaitGroup // Declarando nuestro wait group
+	wg.Add(ciclos)        // Indicamos la cantidad de rutinas a esperar
+
+	for key, value := range units_arr {
+		go func() {
+			units_arr[key] = strings.TrimSpace(value)
+			fmt.Println("| ⌚ El proceso 💼 # ", key, ", empezó a trabajar con la unidad: '", value, "' |")
+			defer wg.Done() // Mensaje region critica
+			work(key)
+		}()
+	}
+
+	/*
+		En lugar de llamar a go work utilizamos una funcion anonima
+	*/
+
+	// ----------> FORK
+
+	wg.Wait() // JOIN <----------
+	// fmt.Println("Ha transcurrido: ", time.Since(now))
+	// fmt.Println("La rutina principal ha terminado")
+}
+
+func work(ciclo int) {
+	time.Sleep(500 * time.Millisecond)
+	fmt.Println("Ciclo de trabajo: ", ciclo)
 }
