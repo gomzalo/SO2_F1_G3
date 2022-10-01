@@ -406,7 +406,7 @@ func memsim(ciclos int, unidades string) {
 }
 
 func work(ciclo int, unidad string) {
-	time.Sleep(500 * time.Millisecond)
-	fmt.Println("| ⌚ El proceso 💼 # ", ciclo+1, ", empezó a trabajar con la unidad: '", unidad, "' |")
 
+	fmt.Println("| ⌚ El proceso 💼 # ", ciclo+1, ", empezó a trabajar con la unidad: '", unidad, "' |")
+	time.Sleep(5000 * time.Millisecond)
 }
