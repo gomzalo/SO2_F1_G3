@@ -404,5 +404,5 @@ func work(unidad string, tam int) {
 	fmt.Println("| ⌚ El proceso 💼 # ", proceso, ", empezó a trabajar con la unidad: '", unidad, "' |")
 	time.Sleep(time.Duration(tam) * time.Millisecond)
 	fmt.Println("| ✅ El proceso 💼 # ", proceso, ", terminó de trabajar con la unidad: '", unidad, "' |")
-	proceso++
+	proceso = proceso + 1
 }
