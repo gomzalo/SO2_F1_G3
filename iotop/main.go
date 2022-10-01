@@ -381,7 +381,7 @@ func memsim(ciclos int, unidades string) {
 	for i := 1; i <= ciclos; i++ {
 		var wg sync.WaitGroup // Declarando nuestro wait group
 		fmt.Println("::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
-		for j := size - 1; j > 0; j-- {
+		for j := size - 1; j >= 0; j-- {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
 			process := 1
 			value := units_arr[j]
