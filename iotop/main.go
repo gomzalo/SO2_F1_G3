@@ -196,7 +196,7 @@ func cmdIOTOP() {
 		println("**************************************************************************")
 		println("***                              IOTOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** 				USUARIO: ", userName, "			***")
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
 		println("**************************************************************************\n")
 
 		out, err := exec.Command("iotop", "-b", "-n1").Output()
@@ -227,7 +227,7 @@ func cmdTOP() {
 		println("**************************************************************************")
 		println("***                              TOP                                 ***")
 		println("**************************************************************************")
-		fmt.Println("*** 				USUARIO: ", userName, "			***")
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
 		println("**************************************************************************\n")
 
 		// out, err := exec.Command("sudo insmod modules/proc_mod.ko").Output()
@@ -263,7 +263,7 @@ func cmdSTRACE() {
 				println("**************************************************************************")
 				println("***                              STRACE SYSTEM                         ***")
 				println("**************************************************************************")
-				fmt.Println("*** 				USUARIO: ", userName, "			***")
+				fmt.Println("*** 				USUARIO: ", userName, "				***")
 				println("**************************************************************************\n")
 				strace(strings.Fields(com.Text()))
 				break
@@ -292,7 +292,7 @@ func cmdMEMSIM() {
 		println("**************************************************************************")
 		println("***                            MEMORY SIMULATION                       ***")
 		println("**************************************************************************")
-		fmt.Println("*** 				USUARIO: ", userName, "			***")
+		fmt.Println("*** 				USUARIO: ", userName, "				***")
 		println("**************************************************************************\n")
 
 		println("Ingrese la cantidad de ciclos de trabajo (solo un entero): ")
