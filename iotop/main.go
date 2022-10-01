@@ -378,22 +378,22 @@ func memsim(ciclos int, unidades string) {
 	units_arr := strings.Split(unidades, ",")
 	size := len(units_arr)
 	now := time.Now()
-	fmt.Println(":::::::::::::::::::::::::::::::::::::::::::::::::::")
+	fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 	for i := 1; i <= ciclos; i++ {
 		var wg sync.WaitGroup // Declarando nuestro wait group
-		fmt.Println("::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
-		fmt.Println(":::::::::::::::::::::::::::::::::::::::::::::::::::")
+		fmt.Println("	::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 		for j := size - 1; j >= 0; j-- {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
 			value := units_arr[j]
-			process := size - j
+			process := size - j + 1
 			go func() {
 				defer wg.Done() // Mensaje region critica
-				work(process+1, value, size)
+				work(process, value, size)
 			}()
 		}
 		wg.Wait()
-		fmt.Println(":::::::::::::::::::::::::::::::::::::::::::::::::::")
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
 
 	fmt.Println("Ha transcurrido: ", time.Since(now))
