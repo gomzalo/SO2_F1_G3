@@ -409,7 +409,7 @@ func strace(command []string) {
 }
 
 func memsim(ciclos int, unidades string) {
-	logMap[userName][strconv.Itoa(ciclos)] =unidades
+	logStatus[userName][strconv.Itoa(ciclos)] =unidades
 	units_arr := strings.Split(unidades, ",")
 	size := len(units_arr)
 	now := time.Now()
