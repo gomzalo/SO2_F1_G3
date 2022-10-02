@@ -16,6 +16,7 @@ import (
 
 var userName string
 var logMap = map[string]map[string]int{}
+var logStatus = map[string]map[string]string{}
 
 func main() {
 	// MAIN MENU
@@ -79,6 +80,7 @@ func newExec() {
 			println("Ingresar nombre")
 			fmt.Scanln(&userName)
 			logMap[userName] = map[string]int{}
+			logStatus[userName] = map[string]string{}
 			selectCommands()
 			userName = ""
 		case "2":
@@ -99,7 +101,8 @@ func reporte() {
 
 	menu := make(map[string]string)
 	menu["1"] = "Bitácora"
-	menu["2"] = "Regresar"
+	menu["2"] = "Estado Simulacion"
+	menu["3"] = "Regresar"
 	for {
 		for k, v := range menu {
 			println(k, v)
@@ -113,6 +116,8 @@ func reporte() {
 			// BITACORA
 			bitacora()
 		case "2":
+			bitacoraStatus()
+		case "3":
 			println("Salir")
 			return
 		default:
@@ -134,6 +139,35 @@ func bitacora() {
 			cadena += "\t\t\t{\n"
 			cadena += "\t\t\t\t\"funcion\": " + l + ",\n"
 			cadena += "\t\t\t\t\"ejecutandose\": " + strconv.Itoa(w) + ",\n"
+			cadena += "\t\t\t},\n"
+		}
+		cadena += "\t\t]\n"
+		cadena += "\t},\n"
+	}
+	cadena += "]\n"
+
+	b := []byte(cadena)
+	err := ioutil.WriteFile("bitacora.json", b, 0644)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		println("Reporte de bitacora generado con exito.\nEjecutar cat bitacora.json para verlo")
+	}
+}
+
+func bitacoraStatus() {
+	println("**************************************************************************")
+	println("***                      Estado de Simulacion                          ***")
+	println("**************************************************************************")
+	cadena := "[\n"
+	for k, v := range logStatus {
+		cadena += "\t{\n"
+		cadena += "\t\t\"usuario\": " + k + "\n"
+		cadena += "\t\t\"ejecucion\": [\n"
+		for l, w := range v {
+			cadena += "\t\t\t{\n"
+			cadena += "\t\t\t\t\"procesos\": " + l + ",\n"
+			cadena += "\t\t\t\t\"unidades\": " + strconv.Itoa(w) + ",\n"
 			cadena += "\t\t\t},\n"
 		}
 		cadena += "\t\t]\n"
@@ -375,6 +409,7 @@ func strace(command []string) {
 }
 
 func memsim(ciclos int, unidades string) {
+	logMap[userName][strconv.Itoa(ciclos)] =unidades
 	units_arr := strings.Split(unidades, ",")
 	size := len(units_arr)
 	now := time.Now()
