@@ -176,7 +176,7 @@ func bitacoraStatus() {
 	cadena += "]\n"
 
 	b := []byte(cadena)
-	err := ioutil.WriteFile("bitacora.json", b, 0644)
+	err := ioutil.WriteFile("bitacoraSimulacion.json", b, 0644)
 	if err != nil {
 		log.Fatal(err)
 	} else {
