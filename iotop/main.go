@@ -409,7 +409,7 @@ func strace(command []string) {
 }
 
 func memsim(ciclos int, unidades string) {
-	logStatus[userName][strconv.Itoa(ciclos)] =unidades
+	
 	units_arr := strings.Split(unidades, ",")
 	size := len(units_arr)
 	now := time.Now()
@@ -431,6 +431,7 @@ func memsim(ciclos int, unidades string) {
 		wg.Wait()
 		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 	}
+	logStatus[userName][strconv.Itoa(process)] =unidades
 
 	fmt.Println("Ha transcurrido: ", time.Since(now))
 	fmt.Println("La rutina principal ha terminado")
