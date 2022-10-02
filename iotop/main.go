@@ -167,7 +167,7 @@ func bitacoraStatus() {
 		for l, w := range v {
 			cadena += "\t\t\t{\n"
 			cadena += "\t\t\t\t\"procesos\": " + l + ",\n"
-			cadena += "\t\t\t\t\"unidades\": " + strconv.Itoa(w) + ",\n"
+			cadena += "\t\t\t\t\"unidades\": " + w + ",\n"
 			cadena += "\t\t\t},\n"
 		}
 		cadena += "\t\t]\n"
