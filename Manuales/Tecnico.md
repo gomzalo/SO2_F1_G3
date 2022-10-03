@@ -144,3 +144,15 @@ cat /proc/[nombreModulo]
 
 ## Actualizacion de Consola
 ![Menu Principal](img/F2/codeActualizacionMensajes.png)
+
+# Fase 3
+
+## Implementacion de MEMSIM
+![Menu Principal](img/F3/memsim.png)
+
+## Funcion MEMSIM
+![Menu Principal](img/F3/funcion.png)
+
+
+## Tiempo e Impresion
+![Menu Principal](img/F3/work.png)
