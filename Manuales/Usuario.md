@@ -11,6 +11,7 @@
 - [Fase 2](#fase-2)
   - [SYSCALL](#syscall)
   - [Reporte JSON](#reporte-json)
+- [Fase 3](#fase-3)
 
 # Fase 1
 
@@ -57,3 +58,14 @@ En este apartado puedes seleccionar cada una de las caracteristicas necesarias a
    siendo *bitacora.json* el nombre del archivo que se genero.
    ![Reporte JSON](img/F2/ReporteJSON.png)
 
+
+# Fase 3
+
+## Funcion MEMSIM
+
+1. Despues de colocar el nombre se debe seleccionar la opcion *4. MEMSIM*.
+   [Menu Reporte](img/F3/opMemsim.png)
+2. Se solicitaran dos parametros, el primero hace referencia a la cantidad de ciclos que se ejecutara el proceso        mientras que el segundo parametro es una lista en la que cada unidad esta delimitada por comas.
+   ![Reporte Generado](img/F3/secuencia.png)
+3. Se presentara el detalle de como fueron operados los procesos, su orden de inicio y en que momento terminaron
+   ![Reporte Generado](img/F3/final.png)

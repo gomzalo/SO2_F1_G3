@@ -13,6 +13,7 @@
     - [Instalar dependencias](#instalar-dependencias)
   - [Kernel](#kernel)
 - [Fase 2](#fase-2)
+- [Fase 3](#fase-3)
 
 # Fase 1
 
