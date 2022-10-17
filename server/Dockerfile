@@ -1,13 +1,13 @@
 FROM golang:bullseye
 
-WORKDIR /go/src/app
+WORKDIR /usr/src/app
 COPY . .
 
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
-COPY . . 
 
-RUN go build -o /go/bin/app cmd/main.go
+COPY . . 
+RUN go build -v -o /usr/local/bin/app ./...
 
 EXPOSE 8080
 
