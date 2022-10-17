@@ -1,15 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 )
-
-type Response struct {
-	Source string
-	Result string
-}
 
 func main() {
 	http.HandleFunc("/", root)
@@ -20,8 +16,17 @@ func main() {
 }
 
 func root(rw http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"status": true,
+		"message": "Sopes 2",
+	}
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		fmt.Printf("got / request\n")
+		io.WriteString(rw, err.Error())
+	}
 	fmt.Printf("got / request\n")
-	io.WriteString(rw, "{message: \"Sopes 2\"}")
+	io.WriteString(rw, string(jsonData))
 }
 
 func logup(rw http.ResponseWriter, r *http.Request) {
