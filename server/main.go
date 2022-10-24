@@ -27,6 +27,16 @@ type memsim struct {
 	Unidades []int `json:"unidades"`
 }
 
+type memsim_proc struct {
+	Ciclo int `json: "ciclo"`
+	Procesos []string `json: "procesos"`
+}
+
+type memsim_res struct {
+	Memsim []memsim_proc `json: "memsim"`
+	Duracion int64 `json: "duracion"`
+}
+
 type allAccount []account
 
 var accounts = allAccount{
@@ -35,6 +45,8 @@ var accounts = allAccount{
 		Pass: "super-password",
 	},
 }
+
+var procesos []string
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
@@ -123,40 +135,50 @@ func callMemsim(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &configMemsim)
 	fmt.Printf("%v", configMemsim)
 
-	execMemsim(configMemsim.Ciclos, configMemsim.Unidades)
+	var result = execMemsim(configMemsim.Ciclos, configMemsim.Unidades)
 
 	w.WriteHeader(http.StatusOK)
-	responseMessage.Message = "Response OK"
-	json.NewEncoder(w).Encode(responseMessage)
+	json.NewEncoder(w).Encode(result)
 }
 
-func execMemsim(ciclos int, unidades []int) {
+func execMemsim(ciclos int, unidades []int) memsim_res {
+	var result memsim_res
+	size := len(unidades)
 	now := time.Now()
 	var process int = 0
-	fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+
 	for i := 1; i <= ciclos; i++ {
+		var proceso memsim_proc
 		var wg sync.WaitGroup // Declarando nuestro wait group
-		fmt.Println("	::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
-		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-		for _, unidad := range unidades {
+		
+		proceso.Ciclo = i
+		
+		for j := size - 1; j >= 0; j-- {
 			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
+			value := unidades[j]
 			go func() {
 				defer wg.Done() // Mensaje region critica
-				process += 1
-				work(process, unidad, len(unidades))
+				process = process + 1
+				work(process, value, size)
 			}()
 		}
 		wg.Wait()
-		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+		proceso.Procesos = procesos
+		result.Memsim = append(result.Memsim, proceso)
+		procesos = nil
 	}
-	// logStatus[userName][strconv.Itoa(process)] =unidades
 
-	fmt.Println("Ha transcurrido: ", time.Since(now))
-	fmt.Println("La rutina principal ha terminado")
+	var duracion = time.Since(now).Milliseconds()
+	result.Duracion = duracion
+	return result
 }
 
 func work(proceso int, unidad int, tam int) {
-	fmt.Println("| ⌚ El proceso 💼 # ", proceso, ", empezó a trabajar con la unidad: '", strconv.Itoa(unidad), "' |")
+	var inicioProceso = "El proceso # " + strconv.Itoa(proceso) + ", empezó a trabajar con la unidad: '" + strconv.Itoa(unidad) + "'"
+	procesos = append(procesos, inicioProceso)
+	
 	time.Sleep(time.Duration(tam) * time.Millisecond)
-	fmt.Println("| ✅ El proceso 💼 # ", proceso, ", terminó de trabajar con la unidad: '", strconv.Itoa(unidad), "' |")
+	
+	var finProceso = "El proceso # " + strconv.Itoa(proceso) + ", terminó de trabajar con la unidad: '" + strconv.Itoa(unidad) + "'"
+	procesos = append(procesos, finProceso)
 }
