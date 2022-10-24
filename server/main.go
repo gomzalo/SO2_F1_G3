@@ -6,6 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+	"sync"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -106,7 +109,6 @@ func getAllAccount(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(accounts)
 }
 
-
 func callMemsim(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var responseMessage message
@@ -121,7 +123,40 @@ func callMemsim(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &configMemsim)
 	fmt.Printf("%v", configMemsim)
 
+	execMemsim(configMemsim.Ciclos, configMemsim.Unidades)
+
 	w.WriteHeader(http.StatusOK)
 	responseMessage.Message = "Response OK"
 	json.NewEncoder(w).Encode(responseMessage)
+}
+
+func execMemsim(ciclos int, unidades []int) {
+	now := time.Now()
+	var process int = 0
+	fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+	for i := 1; i <= ciclos; i++ {
+		var wg sync.WaitGroup // Declarando nuestro wait group
+		fmt.Println("	::::::::::::	Ciclo de trabajo: ", i, "	::::::::::::")
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+		for _, unidad := range unidades {
+			wg.Add(1) // Indicamos la cantidad de rutinas a esperar
+			go func() {
+				defer wg.Done() // Mensaje region critica
+				process += 1
+				work(process, unidad, len(unidades))
+			}()
+		}
+		wg.Wait()
+		fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+	}
+	// logStatus[userName][strconv.Itoa(process)] =unidades
+
+	fmt.Println("Ha transcurrido: ", time.Since(now))
+	fmt.Println("La rutina principal ha terminado")
+}
+
+func work(proceso int, unidad int, tam int) {
+	fmt.Println("| ⌚ El proceso 💼 # ", proceso, ", empezó a trabajar con la unidad: '", strconv.Itoa(unidad), "' |")
+	time.Sleep(time.Duration(tam) * time.Millisecond)
+	fmt.Println("| ✅ El proceso 💼 # ", proceso, ", terminó de trabajar con la unidad: '", strconv.Itoa(unidad), "' |")
 }
