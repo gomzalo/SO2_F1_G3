@@ -14,6 +14,7 @@
   - [Kernel](#kernel)
 - [Fase 2](#fase-2)
 - [Fase 3](#fase-3)
+- [Fase 4](#fase-4)
 
 # Fase 1
 
@@ -157,3 +158,7 @@ cat /proc/[nombreModulo]
 
 ## Tiempo e Impresion
 ![Menu Principal](img/F3/work.png)
+
+# Fase 4
+
+[Documentación de APIRest](https://documenter.getpostman.com/view/5658161/2s84LGYaxu)
