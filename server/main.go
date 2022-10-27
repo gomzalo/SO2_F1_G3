@@ -6,6 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"server/configs"
+	"server/controllers"
+	"server/models"
 	"strconv"
 	"sync"
 	"time"
@@ -13,118 +16,139 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type message struct {
-	Message string `json:"message"`
-}
+// type message struct {
+// 	Message string `json:"message"`
+// }
 
-type account struct {
-	Email string `json:"email"`
-	Pass string `json:"pass"`
-}
+// type account struct {
+// 	Id primitive.ObjectID `json:"id,omitempty"`
+// 	Email string `json:"email"`
+// 	Pass string `json:"pass"`
+// }
 
-type memsim struct {
-	Ciclos int `json:"ciclos"`
-	Unidades []int `json:"unidades"`
-}
+// type memsim struct {
+// 	Ciclos int `json:"ciclos"`
+// 	Unidades []int `json:"unidades"`
+// }
 
-type memsim_proc struct {
-	Ciclo int `json: "ciclo"`
-	Procesos []string `json: "procesos"`
-}
+// type memsim_proc struct {
+// 	Ciclo int `json:"ciclo"`
+// 	Procesos []string `json:"procesos"`
+// }
 
-type memsim_res struct {
-	Memsim []memsim_proc `json: "memsim"`
-	Duracion int64 `json: "duracion"`
-}
+// type memsim_res struct {
+// 	Id primitive.ObjectID `json:"id,omitempty"`
+// 	Memsim []memsim_proc `json:"memsim"`
+// 	Duracion int64 `json:"duracion"`
+// }
 
-type allAccount []account
+// type allAccount []account
 
-var accounts = allAccount{
-	{
-		Email: "usuario@example.com",
-		Pass: "super-password",
-	},
-}
+// var accounts = allAccount{
+// 	{
+// 		Email: "usuario@example.com",
+// 		Pass: "super-password",
+// 	},
+// }
 
 var procesos []string
 
 func main() {
+	configs.ConnectDB()
+	
 	router := mux.NewRouter().StrictSlash(true)
-	// router.Headers("Content-Type", "application/json")
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/logup", createAccount)
-	router.HandleFunc("/login", getOneAccount)
-	router.HandleFunc("/users", getAllAccount)
+	router.HandleFunc("/logup", controllers.CreateUser)
+	router.HandleFunc("/login", controllers.GetOneUser)
+	router.HandleFunc("/users", controllers.GetAllUser)
 	router.HandleFunc("/memsim", callMemsim)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var responseMessage message
+	var responseMessage models.Message
 	responseMessage.Message ="Welcome home!"
 	json.NewEncoder(w).Encode(responseMessage)
 }
 
-func createAccount(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var responseMessage message
-	var newAccount account
-	reqBody, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusNoContent)
-		responseMessage.Message = "Kindly enter data with the user account"
-		json.NewEncoder(w).Encode(responseMessage)
-	}
+// func createUser(w http.ResponseWriter, r *http.Request) {
+// 	var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "usuarios")
+	
+// 	ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+// 	var user account
+// 	defer cancel()
 
-	json.Unmarshal(reqBody, &newAccount)
-	accounts = append(accounts, newAccount)
-	w.WriteHeader(http.StatusCreated)
-	fmt.Fprintf(w, "Account created successfully")
-}
+// 	w.Header().Set("Content-Type", "application/json")
+// 	var responseMessage message
+	
+// 	reqBody, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusNoContent)
+// 		responseMessage.Message = "Kindly enter data with the user account"
+// 		json.NewEncoder(w).Encode(responseMessage)
+// 	}
+	
+// 	json.Unmarshal(reqBody, &user)
+// 	newUser := account {
+// 		Id: primitive.NewObjectID(),
+// 		Email: user.Email,
+// 		Pass: user.Pass,
+// 	}
+// 	result, err := userCollection.InsertOne(ctx, newUser)
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusNoContent)
+// 		responseMessage.Message = "Error to insert data"
+// 		json.NewEncoder(w).Encode(responseMessage)
+// 	}
+// 	fmt.Printf("%v", result)
+// 	w.WriteHeader(http.StatusCreated)
+// 	fmt.Fprintf(w, "Account created successfully")
+// }
 
-func getOneAccount(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var responseMessage message
-	var checkAccount account
-	reqBody, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusNoContent)
-		responseMessage.Message = "Kindly enter data with the user account"
-		json.NewEncoder(w).Encode(responseMessage)
-	}
+// func getOneUser(w http.ResponseWriter, r *http.Request) {
+// 	// var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "usuarios")
+// 	w.Header().Set("Content-Type", "application/json")
+// 	var responseMessage message
+// 	var checkAccount account
+// 	reqBody, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusNoContent)
+// 		responseMessage.Message = "Kindly enter data with the user account"
+// 		json.NewEncoder(w).Encode(responseMessage)
+// 	}
 
-	json.Unmarshal(reqBody, &checkAccount)
-	for _, singleAccount := range accounts {
-		if singleAccount.Email == checkAccount.Email {
-			if singleAccount.Pass == checkAccount.Pass {
-				w.WriteHeader(http.StatusAccepted)
-				responseMessage.Message = "Access granted"
-				json.NewEncoder(w).Encode(responseMessage)
-				return
-			} else {
-				w.WriteHeader(http.StatusNotAcceptable)
-				responseMessage.Message = "Wrong password"
-				json.NewEncoder(w).Encode(responseMessage)
-				return
-			}
-		}
-	}
-	w.WriteHeader(http.StatusNotFound)
-	responseMessage.Message = "User not found"
-	json.NewEncoder(w).Encode(responseMessage)
-}
+// 	json.Unmarshal(reqBody, &checkAccount)
+// 	for _, singleAccount := range accounts {
+// 		if singleAccount.Email == checkAccount.Email {
+// 			if singleAccount.Pass == checkAccount.Pass {
+// 				w.WriteHeader(http.StatusAccepted)
+// 				responseMessage.Message = "Access granted"
+// 				json.NewEncoder(w).Encode(responseMessage)
+// 				return
+// 			} else {
+// 				w.WriteHeader(http.StatusNotAcceptable)
+// 				responseMessage.Message = "Wrong password"
+// 				json.NewEncoder(w).Encode(responseMessage)
+// 				return
+// 			}
+// 		}
+// 	}
+// 	w.WriteHeader(http.StatusNotFound)
+// 	responseMessage.Message = "User not found"
+// 	json.NewEncoder(w).Encode(responseMessage)
+// }
 
-func getAllAccount(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(accounts)
-}
+// func getAllUser(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.WriteHeader(http.StatusOK)
+// 	json.NewEncoder(w).Encode(accounts)
+// }
 
 func callMemsim(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var responseMessage message
-	var configMemsim memsim
+	var responseMessage models.Message
+	var configMemsim models.Memsim
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
@@ -141,14 +165,14 @@ func callMemsim(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
-func execMemsim(ciclos int, unidades []int) memsim_res {
-	var result memsim_res
+func execMemsim(ciclos int, unidades []int) models.MemsimRes {
+	var result models.MemsimRes
 	size := len(unidades)
 	now := time.Now()
 	var process int = 0
 
 	for i := 1; i <= ciclos; i++ {
-		var proceso memsim_proc
+		var proceso models.MemsimProc
 		var wg sync.WaitGroup // Declarando nuestro wait group
 		
 		proceso.Ciclo = i
