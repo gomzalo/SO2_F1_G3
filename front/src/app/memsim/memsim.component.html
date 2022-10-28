@@ -1,0 +1,20 @@
+<button (click)="salir()" type="submit" style="border: 0;"><img src="https://cdn-icons-png.flaticon.com/512/339/339737.png" height ="40" width="40" /></button>
+<div class="login">
+    <form class="custom-form" method="post">
+        <h1>MEMSIM</h1>
+        <input type="text" [(ngModel)]="ciclos" name="ciclos" placeholder="Ciclos" required="required" />
+        <input type="text" [(ngModel)]="unidades" name="unidades" placeholder="Unidades" required="required" />
+        <button type="submit" (click)="newMemsim()">Procesar</button>
+    </form>
+</div>
+<div *ngIf="memsim">
+    <div class="custom-div" *ngFor="let proc of memsim['memsim']">
+        <label>{{proc['Ciclo']}}</label>
+        <table>
+            <tr *ngFor="let mem of proc['procesos']">
+                <td>{{mem}}</td>
+            </tr>
+        </table>
+    </div>
+    
+</div>
