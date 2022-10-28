@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testdeploy
+  labels:
+    app: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test
+  minReadySeconds: 20
+  strategy:
+    rollingUpdates:
+      maxSurge: 1
+      maxUnavaiable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: test
+        image: carlosdaviddh/ayd2pro2frontend
+        ports:
+        - containerPort: 80

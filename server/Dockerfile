@@ -1,14 +1,14 @@
-FROM golang:bullseye
+FROM golang:1.16.5 as developement
 
-WORKDIR /usr/src/app
-COPY . .
+WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN go mod download && go mod verify
+RUN go mod download
 
-COPY . . 
-RUN go build -v -o /usr/local/bin/app ./...
+COPY . .
+
+RUN go install github.com/cespare/reflex@latest
 
 EXPOSE 8080
 
-CMD ["app"]
+CMD reflex -g '*.go' go run main.go --start-service
