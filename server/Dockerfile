@@ -9,6 +9,9 @@ COPY . .
 
 RUN go install github.com/cespare/reflex@latest
 
+ENV MONGO_USER Bases2
+ENV MONGO_PASS SiSale
+
 EXPOSE 8080
 
 CMD reflex -g '*.go' go run main.go --start-service
