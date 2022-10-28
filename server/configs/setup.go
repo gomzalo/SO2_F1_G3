@@ -10,11 +10,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var uri string = "mongodb+srv://Bases2:SiSale@cluster0.imibgld.mongodb.net/?retryWrites=true&w=majority"
-
 func ConnectDB() *mongo.Client {
 	client, err := mongo.NewClient(
-		options.Client().ApplyURI(uri),
+		options.Client().ApplyURI("mongodb+srv://" + EnvMongoUser() + ":" + EnvMongoPass() + "@cluster0.imibgld.mongodb.net/?retryWrites=true&w=majority"),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -34,7 +32,7 @@ func ConnectDB() *mongo.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Connected to MongoDB")
+	fmt.Println("¡Connected to MongoDB!")
 	return client
 }
 

@@ -29,7 +29,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
-		responseMessage.Message = "Kindly enter data with the user account"
+		responseMessage.Message = "Por favor, ingrese datos con la cuenta de usuario"
 		json.NewEncoder(w).Encode(responseMessage)
 		return
 	}
@@ -43,13 +43,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	result, err := userCollection.InsertOne(ctx, newUser)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
-		responseMessage.Message = "Error to insert data"
+		responseMessage.Message = "Error al crear cuenta"
 		json.NewEncoder(w).Encode(responseMessage)
 		return
 	}
 	fmt.Printf("%v", result.InsertedID)
 	w.WriteHeader(http.StatusCreated)
-	responseMessage.Message = "Account created successfully"
+	responseMessage.Message = "Cuenta creada satisfactoriamente"
 	responseMessage.IdUser = newUser.Id
 	json.NewEncoder(w).Encode(responseMessage)
 }
@@ -67,7 +67,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
-		responseMessage.Message = "Kindly enter data with the user account"
+		responseMessage.Message = "Por favor, ingrese datos con la cuenta de usuario"
 		json.NewEncoder(w).Encode(responseMessage)
 		return
 	}
@@ -77,13 +77,13 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	err = userCollection.FindOne(ctx, bson.M{"email": searchUser.Email, "pass": searchUser.Pass}).Decode(&findedUser)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		responseMessage.Message = "User not found"
+		responseMessage.Message = "Usuario no encontrado"
 		json.NewEncoder(w).Encode(responseMessage)
 		return
 	}
 	
 	w.WriteHeader(http.StatusOK)
-	responseMessage.Message = "Access granted"
+	responseMessage.Message = "Acceso aprobado"
 	json.NewEncoder(w).Encode(findedUser)
 }
 
@@ -97,7 +97,7 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	results, err := userCollection.Find(ctx, bson.M{})
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		responseMessage.Message = "User not found"
+		responseMessage.Message = "No se encontraron usuarios"
 		json.NewEncoder(w).Encode(responseMessage)
 		return
 	}
@@ -107,7 +107,7 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 		var user models.User
 		if err = results.Decode(&user); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			responseMessage.Message = "Server error"
+			responseMessage.Message = "Error del servidor"
 			json.NewEncoder(w).Encode(responseMessage)
 			return
 		}
