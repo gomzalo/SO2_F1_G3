@@ -194,3 +194,4 @@ fabric.properties
 
 */*.txt
 */*.json
+server/.env
