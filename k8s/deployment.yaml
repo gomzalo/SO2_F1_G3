@@ -1,27 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: testdeploy
   labels:
-    app: test
+    environment: test
+  name: testdeploy
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: test
+      environment: test
   minReadySeconds: 20
   strategy:
-    rollingUpdates:
+    rollingUpdate:
       maxSurge: 1
-      maxUnavaiable: 0
+      maxUnavailable: 0
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: test
+        environment: test
     spec:
       containers:
-      - name: test
-        image: carlosdaviddh/ayd2pro2frontend
+      - image: gomzalo/server-g3:latest
+        name: test-server
         ports:
-        - containerPort: 80
+          - containerPort: 80
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.5"
