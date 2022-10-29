@@ -21,7 +21,7 @@ spec:
         environment: test
     spec:
       containers:
-      - image: gomzalo/server-g3:latest
+      - image: gomzalo/server-g3:v1
         name: test-server
         ports:
           - containerPort: 80

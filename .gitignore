@@ -195,3 +195,4 @@ fabric.properties
 */*.txt
 # */*.json
 server/.env
+.vscode/settings.json
