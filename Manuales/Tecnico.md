@@ -161,4 +161,25 @@ cat /proc/[nombreModulo]
 
 # Fase 4
 
+## Arquitectura
+![Menu Principal](img/F4/arquitectura.png)
+
+## Base de Datos MongoDB - NOSQL
+![Menu Principal](img/F4/mongo.png)
+
+## Usuarios
+![Menu Principal](img/F4/usuariosdb.png)
+
+## memsim
+![Menu Principal](img/F4/usuariosdb.png)
+
+## Despliegue
+![Menu Principal](img/F4/deploymentk8s.png)
+
+## Despliegue
+![Menu Principal](img/F4/deploymentk8s.png)
+
+## Dockerfile
+![Menu Principal](img/F4/dockerfront.png)
+
 [Documentación de APIRest](https://documenter.getpostman.com/view/5658161/2s84LGYaxu)

@@ -70,3 +70,7 @@ En este apartado puedes seleccionar cada una de las caracteristicas necesarias a
    ![Reporte Generado](img/F3/secuencia.png)
 3. Se presentara el detalle de como fueron operados los procesos, su orden de inicio y en que momento terminaron
    ![Reporte Generado](img/F3/final.png)
+
+# Fase 4
+![Menu Principal](img/F4/login.jpg)
+
