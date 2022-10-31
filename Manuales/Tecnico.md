@@ -305,14 +305,14 @@ cat /proc/[nombreModulo]
   kubectl get rs
   ```
 
-- #### Realizar un rollout
+- #### Realizar un rollback
   <div id='rollout-status'/>
 
   ```sh
   kubectl rollout undo [deployment_name]
   ```
 
-- #### Verficar estado de rollout
+- #### Verificar estado de rollout
   <div id='rollout-undo'/>
 
   ```sh
