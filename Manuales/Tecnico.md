@@ -13,8 +13,25 @@
     - [Instalar dependencias](#instalar-dependencias)
   - [Kernel](#kernel)
 - [Fase 2](#fase-2)
+  - [Implementacion de SYSCALL - Strace](#implementacion-de-syscall---strace)
+  - [Reportes](#reportes)
+  - [Actualizacion de Consola](#actualizacion-de-consola)
 - [Fase 3](#fase-3)
+  - [Implementacion de MEMSIM](#implementacion-de-memsim)
+  - [Funcion MEMSIM](#funcion-memsim)
+  - [Tiempo e Impresion](#tiempo-e-impresion)
 - [Fase 4](#fase-4)
+  - [Arquitectura](#arquitectura)
+  - [Base de Datos MongoDB - NOSQL](#base-de-datos-mongodb---nosql)
+  - [Usuarios](#usuarios)
+  - [memsim](#memsim)
+  - [Despliegue](#despliegue)
+  - [Despliegue](#despliegue-1)
+  - [Dockerfile](#dockerfile)
+  - [Comandos](#comandos)
+    - [Docker](#docker)
+    - [Kubernetes](#kubernetes)
+  - [Pasos para realizar un rollout y un rollback](#pasos-para-realizar-un-rollout-y-un-rollback)
 
 # Fase 1
 
@@ -183,3 +200,160 @@ cat /proc/[nombreModulo]
 ![Menu Principal](img/F4/dockerfront.png)
 
 [Documentación de APIRest](https://documenter.getpostman.com/view/5658161/2s84LGYaxu)
+
+## Comandos
+
+### Docker
+
+- #### Crear imagen
+
+  ```sh
+  docker build -t [user_name]/[image_name]:[version] .
+  ```
+- #### Correr imagen
+
+  ```sh
+  docker run -p [host_port]:[container_port] [user_name]/[image_name]:[version]
+  ```
+
+- #### Ver imagenes
+
+  ```sh
+  docker images
+  ```
+
+- #### Ver contenedores
+
+  ```sh
+  docker ps
+  ```
+
+- #### Subir imagen a DockerHub
+
+  ```sh
+  docker push [user_name]/[image_name]:[version]
+  ```
+
+- #### Descargar imagen de DockerHub
+
+  ```sh
+  docker pull [user_name]/[image_name]:[version]
+  ```
+
+### Kubernetes
+
+- #### Configurar kubeconfig utilizando ***doctl***
+
+  - Conectar doctl a DigitalOcean
+  
+  ```sh
+  doctl auth init
+  ``` 
+
+  - Obtener kubeconfig de DigitalOcean
+  
+  ```sh
+  doctl kubernetes cluster kubeconfig save [nombre_cluster]
+  ```
+
+- #### Aplicar configuracion de Kubernetes
+  <div id='apply'/>
+
+  ```sh
+  kubectl apply -f [archivo.yaml]
+  ```
+
+- #### Ver pods
+
+  ```sh
+  kubectl get pods
+  ```
+- #### Obtener servicios
+  Agregar bandera `-w` para ver cambios en tiempo real.
+
+  ```sh
+  kubectl get svc
+  ```
+
+- #### Obtener deployments
+  Agregar bandera `-w` para ver cambios en tiempo real.
+
+  ```sh
+  kubectl get deploy
+  ```
+- #### Crear servicio desde consola
+  
+  ```sh	
+  kubectl expose deployment [deployment_name] --type=LoadBalancer --name=[service_name]  --port=[port]
+  ```
+- #### Eliminar un servicio
+
+  ```sh
+  kubectl delete service [service_name]
+  ```
+- #### Eliminar un deployment
+
+  ```sh
+  kubectl delete deployment [deployment_name]
+  ```
+
+- #### Obtener replicasets
+  <div id='get-rs'/>
+  Agregar bandera `-w` para ver cambios en tiempo real.
+  
+  ```sh
+  kubectl get rs
+  ```
+
+- #### Realizar un rollout
+  <div id='rollout-status'/>
+
+  ```sh
+  kubectl rollout undo [deployment_name]
+  ```
+
+- #### Verficar estado de rollout
+  <div id='rollout-undo'/>
+
+  ```sh
+  kubectl rollout status deployment/[deployment_name]
+  ```
+
+- #### Actualizar imagen de docker en deployment.yaml
+  <div id='update-tag'/>
+
+  ```sh
+  kubectl set image deployment/[deployment_name] [container_name]=[user_name]/[image_name]:[version]
+  ```
+
+## Pasos para realizar un rollout y un rollback
+
+1. Actualizar el codigo y subir los cambios con un nuevo tag1 a DockerHub.
+   
+    ```sh
+    docker build -t [user_name]/[image_name]:[version] .
+    docker push [user_name]/[image_name]:[version]
+    ```
+
+2. Actualizar imagen de docker en el deployment deseado
+
+    ```sh
+    kubectl set image deployment/[deployment_name] [container_name]=[user_name]/[image_name]:[version]
+    ```
+
+3. Verificar estado del rollout
+
+    ```sh
+    kubectl rollout status deployment/[deployment_name]
+    ```
+  
+4. Realizar un rollback.
+
+    ```sh
+    kubectl rollout undo deployment/[deployment_name]
+    ```
+
+    Se puede [verificar el estado del rollout](#rollout-status).
+
+
+* [Abreviaciones de comandos en **Kubectl**](https://gist.github.com/rosskukulinski/640e34e335c505a260665e1dcce2bb46#file-k8s-resources-md)

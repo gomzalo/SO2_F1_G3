@@ -15,7 +15,6 @@ export class ConnectionServiceService {
   url = environment.url;
 
   login(user): Observable<any> {
-    
     return this.http.post(this.url+"/login", user);
   }
 
