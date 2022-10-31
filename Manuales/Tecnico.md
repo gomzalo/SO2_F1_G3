@@ -328,7 +328,7 @@ cat /proc/[nombreModulo]
 
 ## Pasos para realizar un rollout y un rollback
 
-1. Actualizar el codigo y subir los cambios con un nuevo tag1 a DockerHub.
+1. Actualizar el codigo y subir los cambios con un nuevo tag a DockerHub.
    
     ```sh
     docker build -t [user_name]/[image_name]:[version] .
