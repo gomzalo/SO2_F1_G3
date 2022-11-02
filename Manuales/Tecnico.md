@@ -341,10 +341,21 @@ cat /proc/[nombreModulo]
     kubectl set image deployment/[deployment_name] [container_name]=[user_name]/[image_name]:[version]
     ```
 
+    *Por ejemplo:*
+
+    ```sh
+    kubectl set image deployment/front-deploy front-container=gomzalo/front-g3:v4
+    ```
+
 3. Verificar estado del rollout
 
     ```sh
     kubectl rollout status deployment/[deployment_name]
+    ```
+    *Por ejemplo:*
+
+    ```sh
+    kubectl rollout status deployment/front-deploy
     ```
   
 4. Realizar un rollback.
@@ -353,6 +364,11 @@ cat /proc/[nombreModulo]
     kubectl rollout undo deployment/[deployment_name]
     ```
 
+    *Por ejemplo:*
+
+    ```sh
+    kubectl rollout undo deployment/front-deploy
+    ```
     Se puede [verificar el estado del rollout](#rollout-status).
 
 

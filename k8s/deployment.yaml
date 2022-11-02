@@ -22,7 +22,7 @@ spec:
         app: server-pod
     spec:
       containers:
-      - image: gomzalo/server-g3:v4
+      - image: gomzalo/server-g3:v5
         name: server-container
         ports:
           - containerPort: 8080
@@ -66,7 +66,8 @@ spec:
         app: front-pod
     spec:
       containers:
-      - image: gomzalo/front-g3:latest
+      - image: gomzalo/front-g3:v5
+        # image: gomzalo/front-g3:v4 --> Old Changes
         name: front-container
         ports:
           - containerPort: 80
