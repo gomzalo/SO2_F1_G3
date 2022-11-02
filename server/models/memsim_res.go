@@ -8,5 +8,5 @@ type MemsimRes struct {
 	Memsim   []MemsimProc `json:"memsim"`
 	Duracion int64        `json:"duracion"`
 	Procesos int          `json:"procesos"`
-	Unidades []int          `json:"unidades"`
+	Unidades []string          `json:"unidades"`
 }

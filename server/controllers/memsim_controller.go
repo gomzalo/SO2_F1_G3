@@ -95,7 +95,7 @@ func GetAllMemsim(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func execMemsim(ciclos int, unidades []int) models.MemsimRes {
+func execMemsim(ciclos int, unidades []string) models.MemsimRes {
 	var result models.MemsimRes
 	size := len(unidades)
 	now := time.Now()
@@ -130,12 +130,12 @@ func execMemsim(ciclos int, unidades []int) models.MemsimRes {
 	return result
 }
 
-func work(proceso int, unidad int, tam int) {
-	var inicioProceso = "El proceso # " + strconv.Itoa(proceso) + ", empezó a trabajar con la unidad: '" + strconv.Itoa(unidad) + "'"
+func work(proceso int, unidad string, tam int) {
+	var inicioProceso = "El proceso # " + strconv.Itoa(proceso) + ", empezó a trabajar con la unidad: '" + unidad + "'"
 	procesos = append(procesos, inicioProceso)
 	
 	time.Sleep(time.Duration(tam) * time.Millisecond)
 	
-	var finProceso = "El proceso # " + strconv.Itoa(proceso) + ", terminó de trabajar con la unidad: '" + strconv.Itoa(unidad) + "'"
+	var finProceso = "El proceso # " + strconv.Itoa(proceso) + ", terminó de trabajar con la unidad: '" + unidad + "'"
 	procesos = append(procesos, finProceso)
 }
