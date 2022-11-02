@@ -72,5 +72,22 @@ En este apartado puedes seleccionar cada una de las caracteristicas necesarias a
    ![Reporte Generado](img/F3/final.png)
 
 # Fase 4
+En el siguiente apartado se puede ver el flujo a seguir para ver el resultado de memsim dentro de la aplicacion.
+
 ![Menu Principal](img/F4/login.jpg)
+
+## Modulo Memsim
+![Menu Principal](img/F4/memsimfront.png)
+
+### Ejemplo de codigo
+```
+4
+"3","d","r","5"
+```
+
+## Usuarios
+![Menu Principal](img/F4/usuariosdb.png)
+
+## memsim
+![Menu Principal](img/F4/usuariosdb.png)
 
